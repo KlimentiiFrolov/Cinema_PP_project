@@ -1,6 +1,7 @@
-﻿//Основаная библиотека
+﻿#include <cassert>
+
+//Основная библиотека
 #include <iostream>
-#include <cassert>
 //Библиотека для работы со строками
 #include <string>
 //Библиотека для работы с файлами
@@ -13,11 +14,13 @@
 #include <algorithm>
 //Библиотека Артёма, где присутствует класс, со встроенное проверкой вводных данных
 #include "bestinput.cpp"
+//Библиотека для бронирования
+#include "includes.h"
 using namespace std;
 
-void show_cinema(bool**,int,int);
-bool buy_ticket(bool**, int, int); //принимает зал(массив) номер ряда номер места
-bool** create_hall(int,int);
+void show_cinema(char**,int,int);
+bool buy_ticket(char**, int, int); //принимает зал(массив) номер ряда номер места
+char** create_hall(int,int);
 void view_movie_schedules();
 
 /*От Артёма: функции для имитации оплаты и покупки*/
@@ -27,24 +30,24 @@ enum Operation {
 	Card = 1,
 	QRcode = 2
 };
-//Выбор метода оплаты
+// Выбор метода оплаты.
 void ChoosePaymentMethod();
-//Функция, где в зависимости выбранного способа оплаты, будет происходить конкретная оплата
+// Функция, где в зависимости выбранного способа оплаты, будет происходить конкретная оплата.
 bool Oplata(Operation);
-//Генерация QR-кода
+// Генерация QR-кода.
 string QRgeneration();
 
-// тип места place.first - ряд place.second - место
+// Тип места place.first - ряд place.second - место.
 typedef std::pair<int,int> place;
 
 int score_place(int n, int m, const place& pl){
 	return std::abs(pl.first-n/2) + std::abs(pl.second-m/2);
 }
 
-// возвращает вектор с местами, где справа от них есть num мест типа type (0 - пустое)
-// места ближе к центру первее в массиве
-std::vector<place> find_close_seats(char** cinema, int n, int m, int num, int type = 0) {
-	std::vector<place> places;
+// Возвращает вектор с местами, где справа от них есть num мест типа type (0 - пустое).
+// Места ближе к центру первее в массиве.
+vector<place> find_close_seats(char** cinema, int n, int m, int num, int type = 0) {
+	vector<place> places;
 
 	for(int i = 0; i < n; i++){
 		int seq = 0;
@@ -57,9 +60,9 @@ std::vector<place> find_close_seats(char** cinema, int n, int m, int num, int ty
 		}
 	}
 
-	std::sort(places.begin(), places.end(), [n,m](const place& a, const place& b){return score_place(n, m, a) < score_place(n, m, b) ;});
+	sort(places.begin(), places.end(), [n,m](const place& a, const place& b){return score_place(n, m, a) < score_place(n, m, b) ;});
 
-	return std::move(places);
+	return move(places);
 }
 
 namespace tests
@@ -115,27 +118,33 @@ namespace tests
 		}*/
 	}
 }
+int const ROWS = 3;
+int const COLS = 10;
+char** cinema1 = create_hall(ROWS, COLS);
+int main() {
 
-int main()
-{
 	srand(time(NULL));
-	SetConsoleCP(1251);
-	SetConsoleOutputCP(1251);
-	bool** cinema1 = create_hall(3, 10);
-	show_cinema(cinema1, 3, 10);
-	ChoosePaymentMethod();
+//    setlocale(LC_ALL, "ru");
+//	SetConsoleCP(1251);
+//	SetConsoleOutputCP(1251);
+    view_movie_schedules();
 }
-
+/*
+ * Нужно создать массивы (векторы), где будут храниться название фильмов и их описание
+ * switch (choice_movie) сменить на пробег циклом по listFilms
+ * */
 void view_movie_schedules() {
-	int choice_movie = 0, choice_session = 0; //Инициалиация переменных для выбора фильма и для выбора сеанса
+	int choice_movie = 0, choice_session = 0; //Инициализация переменных для выбора фильма и для выбора сеанса
 	char answer = 'B'; //Инициализируем переменную для возврата к выбору меню
+    int listFilms[1] {1}; // Массив с номерами фильмов
 
 	while (answer == 'B') {
 		cout << "\nФильмы на 01 января: \n\n"
 			<< "1) Барби\n\n"
 			<< "Выберите фильм и напишете его номер: ";
 
-		while (!(cin >> choice_movie) || (cin.peek() != '\n') || !(choice_movie == 1)) { //Проверка на дурачка, совмещённая с проверкой на выбор фильма, который в прокате
+        //Проверка на дурачка, совмещённая с проверкой на выбор фильма, который в прокате
+		while (!(cin >> choice_movie) || (cin.peek() != '\n') || (find(begin(listFilms), end(listFilms), choice_movie) == end(listFilms))) {
 			cin.clear();
 			while (cin.get() != '\n');
 			cout << "\nИзвините, но такого фильма сейчас нет в прокате :(\n"
@@ -168,13 +177,15 @@ void view_movie_schedules() {
 						<< "Введите R - если забронировать, P - если купить билет B - если вернутся назад :";
 					cin >> answer;
 				}while ((answer != 'R') && (answer != 'P') && (answer != 'B'));
+                show_cinema(cinema1, 3, 10);
 
-				switch (answer) { //Переход к другим функциям
+				switch (answer) { // Переход к другим функциям.
 				case('R'):
-					//Переход на функцию брони
+                    Ticket_reservation(cinema1, ROWS, COLS);
+                    ChoosePaymentMethod();
 					break;
 				case('P'):
-					//Переход на функцию покупки
+					// Переход на функцию покупки.
 					break;
 				}
 			}
@@ -183,34 +194,40 @@ void view_movie_schedules() {
 	}
 }
 
-void show_cinema(bool** arr, int n, int m) {
+void show_cinema(char** arr, int n, int m) {
+    cout << "  "; // для форматированного вывода
+    for (int j = 0; j < m; j++) {
+        cout << j+1 << ' ';
+    }
+    cout << endl;
 	for (int i = 0; i < n; i++) {
+        cout << i+1 << ' ';
 		for (int j = 0; j < m; j++) {
-
 			cout << arr[i][j] << ' ';
 		}
 		cout << endl;
 	}
 }
 
-bool** create_hall(int n, int m) {
+char** create_hall(int n, int m) {
 
-    bool** arr = new bool* [n];
-	for (int i = 0; i < n; i++)
+    char** arr = new char* [n];
+	for (int i = 0; i < n; ++i)
 	{
-		arr[i] = new bool[m] {}; // 0 - свободное место, 1 - занято
+		arr[i] = new char[m]; // 0 - свободное место, 1 - занято
+        memset(arr[i], '0', m); // инициализация массива '0'
 	}
 	return arr;
 }
 
-bool buy_ticket(bool** arr, int n , int m) {
-	if (arr[n][m] == 0) {
-		arr[n][m] = 1;
-		return 1; // успех!!!
+bool buy_ticket(char** arr, int n , int m) {
+	if (arr[n][m] == '0') {
+		arr[n][m] = '1';
+		return true; // успех!!!
 	}
 	else {
 		cout << "ну ты чего, занято же...";
-		return 0; // провал((((
+		return false; // провал((((
 	}
 }
 
@@ -230,18 +247,19 @@ bool Oplata(Operation op) {
 		cout << "\nОплата наличкой прошла успешно!";
 		return true;
 	}
-	else if (op == Card) {
+    if (op == Card) {
 		cout << "Производится полата...";
 		Sleep(1000);
 		cout << "\nОплата по карте прошла успешно!";
 		return true;
 	}
-	else if (op == QRcode) {
+    if (op == QRcode) {
 		cout << "Производится генерация вашего персонального QRcode...";
 		Sleep(1000);
 		cout << "\nВаш персональный QRcode: " << QRgeneration();
 		return true;
 	}
+    return false;
 }
 void ChoosePaymentMethod() {
 	BestInput input;
@@ -252,7 +270,8 @@ void ChoosePaymentMethod() {
 		{
 			flag = false;
 			string temp;
-			cout << "\nВыбирете способ оплаты(qrcode/карта/наличные): ";
+			cout << "\nВыберете способ оплаты(qrcode/карта/наличные): ";
+            cin.ignore();
 			temp = input.InputString();
 			if (temp == "qrcode") { Oplata(QRcode); }
 			else if (temp == "карта") { Oplata(Card); }
@@ -260,5 +279,5 @@ void ChoosePaymentMethod() {
 			else { cout << "Вы ввели способ оплаты, которого у нас нет! Повторите запрос"; flag = true; }
 		} while (flag);
 		cout << "\nВы согласны с выбором? Если нет, мы оформим возврат(да/нет): ";
-	} while (input.YesOrNo() == false);
+	} while (!input.YesOrNo());
 }
