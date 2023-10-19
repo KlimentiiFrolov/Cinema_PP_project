@@ -182,6 +182,7 @@ void view_movie_schedules() {
 				switch (answer) { // Переход к другим функциям.
 				case('R'):
                     Ticket_reservation(cinema1, ROWS, COLS);
+                    movie_merchandaise();
                     ChoosePaymentMethod();
 					break;
 				case('P'):
