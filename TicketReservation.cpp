@@ -1,5 +1,6 @@
 ﻿#include <iostream>
 #include "includes.h"
+
 using namespace std;
 //void Hall_preview(char** hall, int rows, int columns)
 //{

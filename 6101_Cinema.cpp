@@ -1,4 +1,5 @@
 ﻿#include <cassert>
+#include <algorithm>
 
 //Основная библиотека
 #include <iostream>
@@ -11,11 +12,13 @@
 //Библиотека для смены кодировки консоли
 #include <Windows.h>
 //Библиотека для подключения алгоритмов сортировки или рандомизации чисел
-#include <algorithm>
+#include <ctime>
 //Библиотека Артёма, где присутствует класс, со встроенное проверкой вводных данных
+//Лучше переименовать файл в .h
 #include "bestinput.cpp"
-//Библиотека для бронирования
+//Все наши библиотеки
 #include "includes.h"
+
 using namespace std;
 
 void show_cinema(char**,int,int);
@@ -124,7 +127,7 @@ char** cinema1 = create_hall(ROWS, COLS);
 int main() {
 
 	srand(time(NULL));
-//    setlocale(LC_ALL, "ru");
+//  setlocale(LC_ALL, "ru");
 //	SetConsoleCP(1251);
 //	SetConsoleOutputCP(1251);
     view_movie_schedules();
