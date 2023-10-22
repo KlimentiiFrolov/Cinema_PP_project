@@ -13,7 +13,7 @@ void Ticket_reservation_or_buy(char** hall, int rows, int columns, bool reservat
 // Movie_merchandise.cpp
 void order_cola(int& summa, std::vector<std::string>& order);
 void order_popcorn(int& summa, std::vector<std::string>& order);
-void print_order(int summa, std::vector<std::string> order);
+void print_order(int summa, const std::vector<std::string>& order);
 void movie_merchandaise();
 void show_cinema(char**,int,int);
 
