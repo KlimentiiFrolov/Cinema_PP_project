@@ -5,7 +5,7 @@
 
 #include <vector>
 
-// TicketReservation.cpp
+// TicketReservationOrBuy.cpp
 bool Row_is_full(char** const hall, int const chosenR, int const columns);
 bool Hall_is_full(char** const hall, int const rows, int const columns);
 void Ticket_reservation_or_buy(char** hall, int rows, int columns, bool reservation);
