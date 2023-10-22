@@ -1,26 +1,29 @@
 ﻿#include <cassert>
+#include <algorithm>
 #include <vector>
 
-// Основная библиотека
+//Основная библиотека
 #include <iostream>
-// Библиотека для работы со строками
+//Библиотека для работы со строками
 #include <string>
-// Библиотека для работы с файлами
+//Библиотека для работы с файлами
 #include <fstream>
-// Библиотека для работы с вектором
+//Библиотека для работы с вектором
 #include <vector>
-// Библиотека для смены кодировки консоли
+//Библиотека для смены кодировки консоли
 #include <Windows.h>
-// Библиотека для подключения алгоритмов сортировки или рандомизации чисел
-#include <algorithm>
-// Библиотека Артёма, где присутствует класс, со встроенное проверкой вводных данных
+//Библиотека для подключения алгоритмов сортировки или рандомизации чисел
+#include <ctime>
+//Библиотека Артёма, где присутствует класс, со встроенное проверкой вводных данных
+//Лучше переименовать файл в .h
 #include "bestinput.cpp"
-// Подключение библиотек
+//Все наши библиотеки
 #include "includes.h"
-// Библиотека для проверки ввода
-#include "validInput.h"
+
 using namespace std;
 
+void show_cinema(char**,int,int);
+bool buy_ticket(char**, int, int); //принимает зал(массив) номер ряда номер места
 char** create_hall(int,int);
 void view_movie_schedules();
 
@@ -125,7 +128,7 @@ char** cinema1 = create_hall(ROWS, COLS);
 int main() {
 
 	srand(time(nullptr));
-//    setlocale(LC_ALL, "ru");
+//  setlocale(LC_ALL, "ru");
 //	SetConsoleCP(1251);
 //	SetConsoleOutputCP(1251);
     char choice = 'Y';
@@ -220,6 +223,17 @@ char** create_hall(int n, int m) {
         memset(arr[i], '0', m); // инициализация массива '0'
 	}
 	return arr;
+}
+
+bool buy_ticket(char** arr, int n , int m) {
+	if (arr[n][m] == '0') {
+		arr[n][m] = '1';
+		return true; // успех!!!
+	}
+	else {
+		cout << "ну ты чего, занято же...";
+		return false; // провал((((
+	}
 }
 
 string QRgeneration() {
