@@ -1,4 +1,4 @@
-﻿#include <cassert>
+#include <cassert>
 #include <algorithm>
 #include <vector>
 
@@ -71,11 +71,55 @@ vector<place> find_close_seats(char** cinema, int n, int m, int num, int type = 
 	return move(places);
 }
 
+bool h_file_save(char** arr, int n, int m, const char* filename = "cinema.dat"){
+	std::ofstream f(filename, std::ios::binary | std::ios::trunc); // открыть файл в бинарном режиме и удалить содержимое
+	
+	if(!f.is_open())
+		return false;
+	
+	// сохраняем размеры
+	f.write(reinterpret_cast<char*>(&n), sizeof n);
+	f.write(reinterpret_cast<char*>(&m), sizeof m);
+	
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			f.put(arr[i][j]);
+		}
+	}
+	
+	return true;
+}
+
+bool h_file_load(char** arr, int n, int m, const char* filename = "cinema.dat"){
+	std::ifstream f(filename, std::ios::binary); // открыть файл в бинарном режиме
+	
+	if(!f.is_open())
+		return false;
+	
+	int fn, fm;
+	// читаем размеры
+	f.read(reinterpret_cast<char*>(&fn), sizeof fn);
+	f.read(reinterpret_cast<char*>(&fm), sizeof fm);
+	
+	if(f.fail() || n != fn || m != fm)
+		return false;
+	
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			arr[i][j] = f.get();
+		}
+	}
+	
+	return true;
+}
+
 int const ROWS = 3;
 int const COLS = 10;
-char** cinema1 = create_hall(ROWS, COLS);
+char** cinema1 = nullptr;
 int main() {
-
+	cinema1 = create_hall(ROWS, COLS);
+	h_file_load(cinema1, ROWS, COLS);
+	
 	srand(time(nullptr));
 //  setlocale(LC_ALL, "ru");
 //	SetConsoleCP(1251);
@@ -84,6 +128,8 @@ int main() {
     do {
         view_movie_schedules();
         choice = get_input<char>("Если хотите продолжить, то введите Y >");
+		
+		h_file_save(cinema1, ROWS, COLS);
     } while (choice == 'Y');
 }
 /*
