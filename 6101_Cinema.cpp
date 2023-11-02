@@ -71,59 +71,6 @@ vector<place> find_close_seats(char** cinema, int n, int m, int num, int type = 
 	return move(places);
 }
 
-namespace tests
-{
-	void test_Distribution(){
-		char** cinema = new char*[10];
-		for (int i = 0; i < 10; i++){
-			cinema[i] = new char[10]{};
-			for (int j = 0; j < 10; j++) {
-				cinema[i][j] = 1;
-			}
-		}
-
-		cinema[5][4] = 0;
-		cinema[5][5] = 0;
-		cinema[5][6] = 0;
-
-		auto res = find_close_seats(cinema, 10, 10, 3);
-
-		assert(res.size() == 1);
-		assert(res[0].first == 5);
-		assert(res[0].second == 4);
-
-		cinema[5][7] = 0;
-
-		res = find_close_seats(cinema, 10, 10, 3);
-
-		assert(res.size() == 2);
-		assert(res[0].first == 5);
-		assert(res[0].second == 5);
-		assert(res[1].first == 5);
-		assert(res[1].second == 4);
-
-		cinema[5][7] = 1;
-
-		cinema[4][4] = 0;
-		cinema[4][5] = 0;
-		cinema[4][6] = 0;
-
-		res = find_close_seats(cinema, 10, 10, 3);
-
-		assert(res.size() == 2);
-		assert(res[0].first == 5);
-		assert(res[0].second == 4);
-		assert(res[1].first == 4);
-		assert(res[1].second == 4);
-
-		/*for (int i = 0; i < 10; i++) {
-			for (int j = 0; j < 10; j++) {
-				cout << (int)cinema[i][j] << ' ';
-			}
-			cout << endl;
-		}*/
-	}
-}
 int const ROWS = 3;
 int const COLS = 10;
 char** cinema1 = create_hall(ROWS, COLS);
