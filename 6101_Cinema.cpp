@@ -1,115 +1,115 @@
 #include <cassert>
 #include <algorithm>
 #include <vector>
-
-//РћСЃРЅРѕРІРЅР°СЏ Р±РёР±Р»РёРѕС‚РµРєР°.
+//Основная библиотека.
 #include <iostream>
-//Р‘РёР±Р»РёРѕС‚РµРєР° РґР»СЏ СЂР°Р±РѕС‚С‹ СЃРѕ СЃС‚СЂРѕРєР°РјРё.
+//Библиотека для работы со строками.
 #include <string>
-//Р‘РёР±Р»РёРѕС‚РµРєР° РґР»СЏ СЂР°Р±РѕС‚С‹ СЃ С„Р°Р№Р»Р°РјРё.
+//Библиотека для работы с файлами.
 #include <fstream>
-//Р‘РёР±Р»РёРѕС‚РµРєР° РґР»СЏ СЂР°Р±РѕС‚С‹ СЃ РІРµРєС‚РѕСЂРѕРј.
+//Библиотека для работы с вектором.
 #include <vector>
-//Р‘РёР±Р»РёРѕС‚РµРєР° РґР»СЏ СЃРјРµРЅС‹ РєРѕРґРёСЂРѕРІРєРё РєРѕРЅСЃРѕР»Рё.
+//Библиотека для смены кодировки консоли.
 #include <Windows.h>
-//Р‘РёР±Р»РёРѕС‚РµРєР° РґР»СЏ РїРѕРґРєР»СЋС‡РµРЅРёСЏ Р°Р»РіРѕСЂРёС‚РјРѕРІ СЃРѕСЂС‚РёСЂРѕРІРєРё РёР»Рё СЂР°РЅРґРѕРјРёР·Р°С†РёРё С‡РёСЃРµР».
+//Библиотека для подключения алгоритмов сортировки или рандомизации чисел.
 #include <ctime>
-//Р‘РёР±Р»РёРѕС‚РµРєР° РђСЂС‚С‘РјР°, РіРґРµ РїСЂРёСЃСѓС‚СЃС‚РІСѓРµС‚ РєР»Р°СЃСЃ, СЃРѕ РІСЃС‚СЂРѕРµРЅРЅРѕРµ РїСЂРѕРІРµСЂРєРѕР№ РІРІРѕРґРЅС‹С… РґР°РЅРЅС‹С….
-//Р›СѓС‡С€Рµ РїРµСЂРµРёРјРµРЅРѕРІР°С‚СЊ С„Р°Р№Р» РІ .h
-#include "bestinput.cpp"
-//Р’СЃРµ РЅР°С€Рё Р±РёР±Р»РёРѕС‚РµРєРё.
+//Библиотека Артёма, где присутствует класс, со встроенное проверкой вводных данных.
+#include "bestinput.h"
+//Все наши библиотеки.
 #include "includes.h"
-// Р‘РёР±Р»РёРѕС‚РµРєР° РґР»СЏ РїСЂРѕРІРµСЂРєРё РІРІРѕРґР°.
+// Библиотека для проверки ввода.
 #include "validInput.h"
+//Меню
+#include "menu.h"
 
 using namespace std;
 
-void show_cinema(char**,int,int);
-bool buy_ticket(char**, int, int); //РїСЂРёРЅРёРјР°РµС‚ Р·Р°Р»(РјР°СЃСЃРёРІ) РЅРѕРјРµСЂ СЂСЏРґР° РЅРѕРјРµСЂ РјРµСЃС‚Р°
-char** create_hall(int,int);
+void show_cinema(char**, int, int);
+bool buy_ticket(char**, int, int); //принимает зал(массив) номер ряда номер места
+char** create_hall(int, int);
 void view_movie_schedules();
 
-/* РћС‚ РђСЂС‚С‘РјР°: С„СѓРЅРєС†РёРё РґР»СЏ РёРјРёС‚Р°С†РёРё РѕРїР»Р°С‚С‹ Рё РїРѕРєСѓРїРєРё */
-// РџРµСЂРµС‡РёСЃР»РµРЅРёРµ СЂР°Р·Р»РёС‡РЅС‹С… СЃРїРѕСЃРѕР±РѕРІ РѕРїР»Р°С‚С‹.
-enum Operation {
-	Cash = 0,
-	Card = 1,
-	QRcode = 2
-};
-// Р’С‹Р±РѕСЂ РјРµС‚РѕРґР° РѕРїР»Р°С‚С‹.
+/* От Артёма: функции для имитации оплаты и покупки */
+// Перечисление различных способов оплаты.
+//enum Operation {
+//	Cash = 0,
+//	Card = 1,
+//	QRcode = 2
+//};
+// Выбор метода оплаты.
 void ChoosePaymentMethod();
-// Р¤СѓРЅРєС†РёСЏ, РіРґРµ РІ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё РІС‹Р±СЂР°РЅРЅРѕРіРѕ СЃРїРѕСЃРѕР±Р° РѕРїР»Р°С‚С‹, Р±СѓРґРµС‚ РїСЂРѕРёСЃС…РѕРґРёС‚СЊ РєРѕРЅРєСЂРµС‚РЅР°СЏ РѕРїР»Р°С‚Р°.
-bool Oplata(Operation);
-// Р“РµРЅРµСЂР°С†РёСЏ QR-РєРѕРґР°.
+// Функция, где в зависимости выбранного способа оплаты, будет происходить конкретная оплата.
+bool Oplata(int);
+// Генерация QR-кода.
 string QRgeneration();
 
-// РўРёРї РјРµСЃС‚Р° place.first - СЂСЏРґ place.second - РјРµСЃС‚Рѕ.
-typedef std::pair<int,int> place;
+// Тип места place.first - ряд place.second - место.
+typedef std::pair<int, int> place;
 
-int score_place(int n, int m, const place& pl){
-	return std::abs(pl.first-n/2) + std::abs(pl.second-m/2);
+int score_place(int n, int m, const place& pl) {
+	return std::abs(pl.first - n / 2) + std::abs(pl.second - m / 2);
 }
 
-// Р’РѕР·РІСЂР°С‰Р°РµС‚ РІРµРєС‚РѕСЂ СЃ РјРµСЃС‚Р°РјРё, РіРґРµ СЃРїСЂР°РІР° РѕС‚ РЅРёС… РµСЃС‚СЊ num РјРµСЃС‚ С‚РёРїР° type (0 - РїСѓСЃС‚РѕРµ).
-// РњРµСЃС‚Р° Р±Р»РёР¶Рµ Рє С†РµРЅС‚СЂСѓ РїРµСЂРІРµРµ РІ РјР°СЃСЃРёРІРµ.
+// Возвращает вектор с местами, где справа от них есть num мест типа type (0 - пустое).
+// Места ближе к центру первее в массиве.
 vector<place> find_close_seats(char** cinema, int n, int m, int num, int type = 0) {
 	vector<place> places;
 
-	for(int i = 0; i < n; i++){
+	for (int i = 0; i < n; i++) {
 		int seq = 0;
 		for (int j = 0; j < m; j++) {
-			if(cinema[i][j] == type){
+			if (cinema[i][j] == type) {
 				seq++;
-				if(seq >= num)
-					places.emplace_back(i, j-num+1);
+				if (seq >= num)
+					places.emplace_back(i, j - num + 1);
 			}
 		}
 	}
 
-	sort(places.begin(), places.end(), [n,m](const place& a, const place& b){return score_place(n, m, a) < score_place(n, m, b) ;});
+	sort(places.begin(), places.end(), [n, m](const place& a, const place& b) {return score_place(n, m, a) < score_place(n, m, b); });
 
 	return move(places);
 }
 
-bool h_file_save(char** arr, int n, int m, const char* filename = "cinema.dat"){
-	std::ofstream f(filename, std::ios::binary | std::ios::trunc); // РѕС‚РєСЂС‹С‚СЊ С„Р°Р№Р» РІ Р±РёРЅР°СЂРЅРѕРј СЂРµР¶РёРјРµ Рё СѓРґР°Р»РёС‚СЊ СЃРѕРґРµСЂР¶РёРјРѕРµ
-	
-	if(!f.is_open())
+bool h_file_save(char** arr, int n, int m, const char* filename = "cinema.dat") {
+	std::ofstream f(filename, std::ios::binary | std::ios::trunc); // открыть файл в бинарном режиме и удалить содержимое
+
+	if (!f.is_open())
 		return false;
-	
-	// СЃРѕС…СЂР°РЅСЏРµРј СЂР°Р·РјРµСЂС‹
+
+	// сохраняем размеры
 	f.write(reinterpret_cast<char*>(&n), sizeof n);
 	f.write(reinterpret_cast<char*>(&m), sizeof m);
-	
+
 	for (int i = 0; i < n; i++) {
 		for (int j = 0; j < m; j++) {
 			f.put(arr[i][j]);
 		}
 	}
-	
+
 	return true;
 }
 
-bool h_file_load(char** arr, int n, int m, const char* filename = "cinema.dat"){
-	std::ifstream f(filename, std::ios::binary); // РѕС‚РєСЂС‹С‚СЊ С„Р°Р№Р» РІ Р±РёРЅР°СЂРЅРѕРј СЂРµР¶РёРјРµ
-	
-	if(!f.is_open())
+bool h_file_load(char** arr, int n, int m, const char* filename = "cinema.dat") {
+	std::ifstream f(filename, std::ios::binary); // открыть файл в бинарном режиме
+
+	if (!f.is_open())
 		return false;
-	
+
 	int fn, fm;
-	// С‡РёС‚Р°РµРј СЂР°Р·РјРµСЂС‹
+	// читаем размеры
 	f.read(reinterpret_cast<char*>(&fn), sizeof fn);
 	f.read(reinterpret_cast<char*>(&fm), sizeof fm);
-	
-	if(f.fail() || n != fn || m != fm)
+
+	if (f.fail() || n != fn || m != fm)
 		return false;
-	
+
 	for (int i = 0; i < n; i++) {
 		for (int j = 0; j < m; j++) {
 			arr[i][j] = f.get();
 		}
 	}
-	
+
 	return true;
 }
 
@@ -119,89 +119,118 @@ char** cinema1 = nullptr;
 int main() {
 	cinema1 = create_hall(ROWS, COLS);
 	h_file_load(cinema1, ROWS, COLS);
-	
+	Menu menu;
 	srand(time(nullptr));
-//  setlocale(LC_ALL, "ru");
-//	SetConsoleCP(1251);
-//	SetConsoleOutputCP(1251);
-    char choice = 'Y';
-    do {
-        view_movie_schedules();
-        choice = get_input<char>("Р•СЃР»Рё С…РѕС‚РёС‚Рµ РїСЂРѕРґРѕР»Р¶РёС‚СЊ, С‚Рѕ РІРІРµРґРёС‚Рµ Y >");
-		
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+	do {
+		system("cls");
+		view_movie_schedules();
 		h_file_save(cinema1, ROWS, COLS);
-    } while (choice == 'Y');
+		system("cls");
+		cout << "\n\n\n\nХотите продолжить?";
+	} while (menu.YesOrNo());
 }
 /*
- * РќСѓР¶РЅРѕ СЃРѕР·РґР°С‚СЊ РјР°СЃСЃРёРІС‹ (РІРµРєС‚РѕСЂС‹), РіРґРµ Р±СѓРґСѓС‚ С…СЂР°РЅРёС‚СЊСЃСЏ РЅР°Р·РІР°РЅРёРµ С„РёР»СЊРјРѕРІ Рё РёС… РѕРїРёСЃР°РЅРёРµ
- * switch (choice_movie) СЃРјРµРЅРёС‚СЊ РЅР° РїСЂРѕР±РµРі С†РёРєР»РѕРј РїРѕ listFilms
+ * Нужно создать массивы (векторы), где будут храниться название фильмов и их описание
+ * switch (choice_movie) сменить на пробег циклом по listFilms
  * */
 void view_movie_schedules() {
-	int choice_movie, choice_session = 0; //РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РїРµСЂРµРјРµРЅРЅС‹С… РґР»СЏ РІС‹Р±РѕСЂР° С„РёР»СЊРјР° Рё РґР»СЏ РІС‹Р±РѕСЂР° СЃРµР°РЅСЃР°
-	char answer = 'B'; //РРЅРёС†РёР°Р»РёР·РёСЂСѓРµРј РїРµСЂРµРјРµРЅРЅСѓСЋ РґР»СЏ РІРѕР·РІСЂР°С‚Р° Рє РІС‹Р±РѕСЂСѓ РјРµРЅСЋ
-    vector<vector<string>> listFilms = {{"Р‘Р°СЂР±Рё. |12+|",
-                       "2023 Рі. РљРѕРјРµРґРёСЏ/Р¤СЌРЅС‚РµР·Рё",
-                       "РЎРЁРђ, 1 С‡ 54 РјРёРЅ",
-                       "Р РµР¶РёСЃСЃС‘СЂ: Р“СЂРµС‚Р° Р“РµСЂРІРёРі",
-                       "Р”РёСЃС‚СЂРёР±СЊСЋС‚РѕСЂ: Warner Bros. Pictures",
-                       "Р‘Р°СЂР±Рё РІС‹РіРѕРЅСЏСЋС‚ РёР· Р‘Р°СЂР±РёР»РµРЅРґР°, РїРѕС‚РѕРјСѓ С‡С‚Рѕ РѕРЅР° РЅРµ СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓРµС‚ РµРіРѕ РЅРѕСЂРјР°Рј РєСЂР°СЃРѕС‚С‹.",
-                       "РўРѕРіРґР° РѕРЅР° РЅР°С‡РёРЅР°РµС‚ РЅРѕРІСѓСЋ Р¶РёР·РЅСЊ РІ СЂРµР°Р»СЊРЅРѕРј РјРёСЂРµ, РіРґРµ РѕР±РЅР°СЂСѓР¶РёРІР°РµС‚, С‡С‚Рѕ СЃРѕРІРµСЂС€РµРЅСЃС‚РІР°",
-                       "РјРѕР¶РЅРѕ РґРѕСЃС‚РёС‡СЊ С‚РѕР»СЊРєРѕ Р±Р»Р°РіРѕРґР°СЂСЏ РІРЅСѓС‚СЂРµРЅРЅРµР№ РіР°СЂРјРѕРЅРёРё.",
-                       "РЎРµРіРѕРґРЅСЏ РµСЃС‚СЊ СЃРµР°РЅСЃС‹ РЅР°: ",
-                       "1) 13:50"}
-    }; // РњР°СЃСЃРёРІ СЃ С„РёР»СЊРјР°РјРё
+	Menu menu;
+	int choice_movie, choice_session = 0; //Инициализация переменных для выбора фильма и для выбора сеанса
+	bool answer = false; //Инициализируем переменную для возврата к выбору меню
+	//Для создания меню, мне нужно было протестить, если есть несколько фильмов
+	vector<vector<string>> listFilms = { {"Барби. |12+|",
+					   "2023 г. Комедия/Фэнтези",
+					   "США, 1 ч 54 мин",
+					   "Режиссёр: Грета Гервиг",
+					   "Дистрибьютор: Warner Bros. Pictures",
+					   "Барби выгоняют из Барбиленда, потому что она не соответствует его нормам красоты.",
+					   "Тогда она начинает новую жизнь в реальном мире, где обнаруживает, что совершенства",
+					   "можно достичь только благодаря внутренней гармонии.",
+					   "Сегодня есть сеансы на: ",
+					   "1) 13:50"},
+						{"Обитель зла. |18+|",
+					   "2002 г. Ужасы/Боевик/Фантастика",
+					   "США/Германия, 1 ч 40 мин",
+					   "Режиссёр: Пол У.С.Андерсон",
+					   "Дистрибьютор: Sony Pictures Releasing",
+					   "В гигантской подземной лаборатории выходит из-под контроля опаснейший вирус и мгновенно",
+					   "превращает своих жертв в прожорливых зомби. Достаточно одного их укуса или царапины, чтобы",
+					   "человек стал обезумевшим пожирателем живой плоти.",
+					   "Сегодня есть сеансы на: ",
+					   "1) 16:50"},
+	}; // Массив с фильмами
 
-	while (answer == 'B') {
-        cout << "\nР¤РёР»СЊРјС‹ РЅР° 01 СЏРЅРІР°СЂСЏ: \n\n";
-        for (size_t i = 0; i < listFilms.size(); ++i) {
-            cout << i+1 << ") " << listFilms[i][0] << endl;
-        }
-        cout << endl;
-        //РџСЂРѕРІРµСЂРєР° РЅР° РґСѓСЂР°С‡РєР°, СЃРѕРІРјРµС‰С‘РЅРЅР°СЏ СЃ РїСЂРѕРІРµСЂРєРѕР№ РЅР° РІС‹Р±РѕСЂ С„РёР»СЊРјР°, РєРѕС‚РѕСЂС‹Р№ РІ РїСЂРѕРєР°С‚Рµ
-        choice_movie = get_input<int>("Р’С‹Р±РµСЂРёС‚Рµ С„РёР»СЊРј Рё РЅР°РїРёС€РµС‚Рµ РµРіРѕ РЅРѕРјРµСЂ >");
-		while (!(1 <= choice_movie && choice_movie <= listFilms.size())) { // РџСЂРѕРІРµСЂРєР°, С‡С‚Рѕ РІРІРµРґРµРЅРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ РЅР°С…РѕРґРёС‚СЃСЏ РІ РЅСѓР¶РЅРѕРј РґРёР°РїР°Р·РѕРЅРµ РёРЅРґРµРєСЃРѕРІ СЃРїРёСЃРєР° С„РёР»СЊРјРѕРІ.
-			cout << "\nРР·РІРёРЅРёС‚Рµ, РЅРѕ С‚Р°РєРѕРіРѕ С„РёР»СЊРјР° СЃРµР№С‡Р°СЃ РЅРµС‚ РІ РїСЂРѕРєР°С‚Рµ :(\n";
-            choice_movie = get_input<int>("Р’С‹Р±РµСЂРёС‚Рµ С„РёР»СЊРј Рё РЅР°РїРёС€РµС‚Рµ РµРіРѕ РЅРѕРјРµСЂ Р·Р°РЅРѕРІРѕ >");
+	while (answer == false) {
+		cout << "\nФильмы доступные на 01 января: \n\n";
+		for (size_t i = 0; i < listFilms.size(); ++i) {
+			cout << i + 1 << ") " << listFilms[i][0] << endl;
 		}
-        for (const auto& i: listFilms[choice_movie-1]) {
-            cout << i << endl;
-        }
-        do { // РџРѕРєР° Р·РЅР°С‡РµРЅРёРµ РїРµСЂРµРјРµРЅРЅРѕР№ РЅРµ Р±СѓРґРµС‚ F РёР»Рё B, С‚Рѕ Р±СѓРґРµРј Р·Р°РЅРѕРІРѕ Р·Р°РїСЂР°С€РёРІР°С‚СЊ РёР·РјРµРЅРµРЅРёРµ РїРµСЂРµРјРµРЅРЅРѕР№.
-            cout << "\nРҐРѕС‚РёС‚Рµ РїСЂРѕРґРѕР»Р¶РёС‚СЊ СЂР°Р±РѕС‚Сѓ РёР»Рё РІРµСЂРЅСѓС‚СЊСЃСЏ РЅР°Р·Р°Рґ?\n";
-            answer = get_input<char>("Р’РІРµРґРёС‚Рµ F - РµСЃР»Рё РїСЂРѕРґРѕР»Р¶РёС‚СЊ, B - РµСЃР»Рё РІРµСЂРЅСѓС‚СЊСЃСЏ РЅР°Р·Р°Рґ >");  // РР·РјРµРЅРµРЅРёРµ РїРµСЂРµРјРµРЅРЅРѕР№.
-        } while (!(answer == 'F' || answer == 'B'));
+		//
+		cout << endl;
+		cout << "Выберите фильм: ";
+		choice_movie = menu.ChooseFilm(listFilms);
+		/*while (!(1 <= choice_movie && choice_movie <= listFilms.size())) { // Проверка, что введенное значение находится в нужном диапазоне индексов списка фильмов.
+			cout << "\nИзвините, но такого фильма сейчас нет в прокате :(\n";
+			choice_movie = get_input<int>("Выберите фильм и напишете его номер заново >");
+		}*/
+		for (const auto& i : listFilms[choice_movie - 1]) {
+			cout << i << endl;
+		}
+		system("pause");
+		system("cls");
+		menu.SetCursor(24, 6);
+		cout << "Хотите продолжить работу?";
+		answer = menu.YesOrNo();
+		system("cls");
+		/*do { // Пока значение переменной не будет F или B, то будем заново запрашивать изменение переменной.
+			cout << "\nХотите продолжить работу или вернуться назад?\n";
+			answer = get_input<char>("Введите F - если продолжить, B - если вернуться назад >");  // Изменение переменной.
+		} while (!(answer == 'F' || answer == 'B'));*/
 
-        if (answer == 'F') {
-            do {// РџРѕРєР° Р·РЅР°С‡РµРЅРёРµ РїРµСЂРµРјРµРЅРЅРѕР№ РЅРµ Р±СѓРґРµС‚ R, P РёР»Рё B, С‚Рѕ Р±СѓРґРµРј Р·Р°РЅРѕРІРѕ Р·Р°РїСЂР°С€РёРІР°С‚СЊ РёР·РјРµРЅРµРЅРёРµ РїРµСЂРµРјРµРЅРЅРѕР№.
-                cout << "\nРҐРѕС‚РёС‚Рµ Р·Р°Р±СЂРѕРЅРёСЂРѕРІР°С‚СЊ, РєСѓРїРёС‚СЊ РёР»Рё РІРµСЂРЅСѓС‚СЊСЃСЏ РЅР°Р·Р°Рґ?\n";
-                answer = get_input<char>("Р’РІРµРґРёС‚Рµ R - РµСЃР»Рё Р·Р°Р±СЂРѕРЅРёСЂРѕРІР°С‚СЊ, P - РµСЃР»Рё РєСѓРїРёС‚СЊ Р±РёР»РµС‚ B - РµСЃР»Рё РІРµСЂРЅСѓС‚СЃСЏ РЅР°Р·Р°Рґ >");
-            } while (!(answer == 'R' || answer == 'P' || answer == 'B'));
-            show_cinema(cinema1, 3, 10);
-
-            switch (answer) { // РџРµСЂРµС…РѕРґ Рє РґСЂСѓРіРёРј С„СѓРЅРєС†РёСЏРј.
-            case('R'):
-                Ticket_reservation_or_buy(cinema1, ROWS, COLS, true);
-                movie_merchandaise();
-                ChoosePaymentMethod();
-                break;
-            case('P'):
-                Ticket_reservation_or_buy(cinema1, ROWS, COLS, false);
-                movie_merchandaise();
-                ChoosePaymentMethod();
-                break;
-            }
-        }
+		if (answer == true) {
+			/*do {// Пока значение переменной не будет R, P или B, то будем заново запрашивать изменение переменной.
+				cout << "\nХотите забронировать, купить или вернуться назад?\n";
+				answer = get_input<char>("Введите R - если забронировать, P - если купить билет B - если вернутся назад >");
+			} while (!(answer == 'R' || answer == 'P' || answer == 'B'));*/
+			menu.SetCursor(24, 6);
+			cout << "\nХотите забронировать, купить или вернуться назад?";
+			char choose = menu.ChooseTicket();
+			system("cls");
+			switch (choose) { // Переход к другим функциям.
+			case('R'):
+				//show_cinema(cinema1, 3, 10);
+				//Ticket_reservation_or_buy(cinema1, ROWS, COLS, true);
+				cout << "\n\n\n\n\n\n\t\t\tВыберите Место(а) для бронирования:" << endl;
+				menu.ChoosePlaceOnCinema(cinema1, ROWS, COLS, true);
+				movie_merchandaise();
+				ChoosePaymentMethod();
+				break;
+			case('P'):
+				//show_cinema(cinema1, 3, 10);
+				//Ticket_reservation_or_buy(cinema1, ROWS, COLS, false);
+				cout << "\n\n\n\n\n\n\t\t\tВыберите Место(а) для покупки:" << endl;
+				menu.ChoosePlaceOnCinema(cinema1, ROWS, COLS, false);
+				movie_merchandaise();
+				ChoosePaymentMethod();
+				break;
+			case('B'):
+				view_movie_schedules();
+				break;
+			}
+		}
 	}
 }
 
 void show_cinema(char** arr, int n, int m) {
-    cout << "  "; // РґР»СЏ С„РѕСЂРјР°С‚РёСЂРѕРІР°РЅРЅРѕРіРѕ РІС‹РІРѕРґР°
-    for (int j = 0; j < m; j++) {
-        cout << j+1 << ' ';
-    }
-    cout << endl;
+	cout << "  "; // для форматированного вывода
+	for (int j = 0; j < m; j++) {
+		cout << j + 1 << ' ';
+	}
+	cout << endl;
 	for (int i = 0; i < n; i++) {
-        cout << i+1 << ' ';
+		cout << i + 1 << ' ';
 		for (int j = 0; j < m; j++) {
 			cout << arr[i][j] << ' ';
 		}
@@ -211,23 +240,23 @@ void show_cinema(char** arr, int n, int m) {
 
 char** create_hall(int n, int m) {
 
-    char** arr = new char* [n];
+	char** arr = new char* [n];
 	for (int i = 0; i < n; ++i)
 	{
-		arr[i] = new char[m]; // 0 - СЃРІРѕР±РѕРґРЅРѕРµ РјРµСЃС‚Рѕ, 1 - Р·Р°РЅСЏС‚Рѕ
-        memset(arr[i], '0', m); // РёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РјР°СЃСЃРёРІР° '0'
+		arr[i] = new char[m]; // 0 - свободное место, 1 - занято
+		memset(arr[i], '0', m); // инициализация массива '0'
 	}
 	return arr;
 }
 
-bool buy_ticket(char** arr, int n , int m) {
+bool buy_ticket(char** arr, int n, int m) {
 	if (arr[n][m] == '0') {
 		arr[n][m] = '1';
-		return true; // СѓСЃРїРµС…!!!
+		return true; // успех!!!
 	}
 	else {
-		cout << "РЅСѓ С‚С‹ С‡РµРіРѕ, Р·Р°РЅСЏС‚Рѕ Р¶Рµ...";
-		return false; // РїСЂРѕРІР°Р»((((
+		cout << "ну ты чего, занято же...";
+		return false; // провал((((
 	}
 }
 
@@ -240,45 +269,40 @@ string QRgeneration() {
 	}
 	return QR;
 }
-bool Oplata(Operation op) {
-	if (op == Cash) {
-		cout << "РџСЂРѕРёР·РІРѕРґРёС‚СЃСЏ РїРѕР»Р°С‚Р°...";
+bool Oplata(int num) {
+	if (num == 1) {
+		cout << "Производится оплата...";
 		Sleep(1000);
-		cout << "\nРћРїР»Р°С‚Р° РЅР°Р»РёС‡РєРѕР№ РїСЂРѕС€Р»Р° СѓСЃРїРµС€РЅРѕ!";
+		cout << "\nОплата наличкой прошла успешно!";
 		return true;
 	}
-    if (op == Card) {
-		cout << "РџСЂРѕРёР·РІРѕРґРёС‚СЃСЏ РїРѕР»Р°С‚Р°...";
+	if (num == 2) {
+		cout << "Производится полата...";
 		Sleep(1000);
-		cout << "\nРћРїР»Р°С‚Р° РїРѕ РєР°СЂС‚Рµ РїСЂРѕС€Р»Р° СѓСЃРїРµС€РЅРѕ!";
+		cout << "\nОплата по карте прошла успешно!";
 		return true;
 	}
-    if (op == QRcode) {
-		cout << "РџСЂРѕРёР·РІРѕРґРёС‚СЃСЏ РіРµРЅРµСЂР°С†РёСЏ РІР°С€РµРіРѕ РїРµСЂСЃРѕРЅР°Р»СЊРЅРѕРіРѕ QRcode...";
+	if (num == 3) {
+		cout << "Производится генерация вашего персонального QRcode...";
 		Sleep(1000);
-		cout << "\nР’Р°С€ РїРµСЂСЃРѕРЅР°Р»СЊРЅС‹Р№ QRcode: " << QRgeneration();
+		cout << "\nВаш персональный QRcode: " << QRgeneration();
 		return true;
 	}
-    return false;
+	return false;
 }
 void ChoosePaymentMethod() {
-	BestInput input;
 	bool flag;
+	Menu menu;
+	vector <string> PayList{"Наличные","Карта","QR-code"};
 	do
 	{
-		do
-		{
-			flag = false;
-			string temp;
-			cout << "\nР’С‹Р±РµСЂРµС‚Рµ СЃРїРѕСЃРѕР± РѕРїР»Р°С‚С‹(qrcode/РєР°СЂС‚Р°/РЅР°Р»РёС‡РЅС‹Рµ) >";
-			temp = input.InputString();
-			if (temp == "qrcode") { Oplata(QRcode); }
-			else if (temp == "РєР°СЂС‚Р°") { Oplata(Card); }
-			else if (temp == "РЅР°Р»РёС‡РЅС‹Рµ") { Oplata(Cash); }
-			else {
-                cout << "Р’С‹ РІРІРµР»Рё СЃРїРѕСЃРѕР± РѕРїР»Р°С‚С‹, РєРѕС‚РѕСЂРѕРіРѕ Сѓ РЅР°СЃ РЅРµС‚! РџРѕРІС‚РѕСЂРёС‚Рµ Р·Р°РїСЂРѕСЃ";
-                flag = true;}
-		} while (flag);
-		cout << "\nР’С‹ СЃРѕРіР»Р°СЃРЅС‹ СЃ РІС‹Р±РѕСЂРѕРј? Р•СЃР»Рё РЅРµС‚, РјС‹ РѕС„РѕСЂРјРёРј РІРѕР·РІСЂР°С‚(РґР°/РЅРµС‚) >";
-	} while (!input.YesOrNo());
+		system("cls");
+		cout << "\n\nВыберите метод оплаты:";
+		int temp = menu.ChooseProduct(PayList);
+		Oplata(temp);
+		cout << '\n';
+		system("pause");
+		system("cls");
+		cout << "\n\n\nВы согласны с выбором оплаты? Если нет, мы вернём затраченные средства";
+	} while (!menu.YesOrNo());
 }

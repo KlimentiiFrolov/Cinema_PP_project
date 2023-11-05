@@ -1,4 +1,4 @@
-п»ї
+
 
 #ifndef CINEMA_PP_PROJECT_INCLUDES_H
 #define CINEMA_PP_PROJECT_INCLUDES_H
@@ -15,14 +15,14 @@ void order_cola(int& summa, std::vector<std::string>& order);
 void order_popcorn(int& summa, std::vector<std::string>& order);
 void print_order(int summa, const std::vector<std::string>& order);
 void movie_merchandaise();
-void show_cinema(char**,int,int);
+void show_cinema(char**, int, int);
 
 // DZPP2.cpp
 int verefecation_Purchase_of_tickets();
 int Purchase_of_tickets();
 
 // bestinput.cpp
-// РЅСѓР¶РЅРѕ Р±С‹Р»Рѕ РґРµР»Р°С‚СЊ РїРѕ-РґСЂСѓРіРѕРјСѓ, РµСЃР»Рё СЃРґРµР»Р°С‚СЊ С‚Р°Рє РїСЂРёРґРµС‚СЃСЏ РїРµСЂРµРїРёСЃС‹РІР°С‚СЊ РІРµСЃСЊ bestinput.cpp
+// нужно было делать по-другому, если сделать так придется переписывать весь bestinput.cpp
 /*class BestInput{
 	std::string EraseNulls(std::string num);
 	std::string ReplaceDotToComma(std::string str);

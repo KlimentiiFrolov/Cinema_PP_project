@@ -1,8 +1,8 @@
-п»ї// Р”РѕР±Р°РІРёС‚СЊ РїСЂРѕРІРµСЂРєСѓ РІС…РѕРґРЅС‹С… РґР°РЅРЅС‹С….
-// Р”РѕР±Р°РІРёС‚СЊ РѕР±С‰РµРµ РјРµРЅСЋ.
-// Р”РѕР±Р°РІРёС‚СЊ Р±РѕР»СЊС€Рµ С‚РѕРІР°СЂРѕРІ.
-// Р”РѕР±Р°РІРёС‚СЊ С„СѓРЅРєС†РёСЋ РѕРїР»Р°С‚С‹.
-// РџРѕС„РёРєСЃРёС‚СЊ РІС‹РІРѕРґ.
+// Добавить проверку входных данных.
+// Добавить общее меню.
+// Добавить больше товаров.
+// Добавить функцию оплаты.
+// Пофиксить вывод.
 
 
 #include <iostream>
@@ -10,81 +10,94 @@
 #include <string>
 #include "includes.h"
 #include "validInput.h"
+#include "menu.h"
 using namespace std;
-
-
+Menu menu;
 void order_cola(int& summa, vector<string>& order) {
     int count;
-    int user_chose;
-    int size_price[3] = { 40,75,100 };
-    string type[3] = { "Small","Average","Big" };
+    int user_choose;
+    const int CountOfProdustion = 3;
+    int size_price[CountOfProdustion] = { 40,75,100 };
+    string type[CountOfProdustion] = { "Маленькая","средняя","Большая" };
+    system("cls");
+    cout << "\n\n\n\nВыберите размер колы:" << endl;
+    user_choose = menu.ChooseSize(size_price, type);
+    /*cout << "1 - Маленькая - " << size_price[0] << " РУБ" << endl;
+    cout << "2 - Средняя - " << size_price[1] << " РУБ" << endl;
+    cout << "3 - Большая - " << size_price[2] << " РУБ" << endl;
+    cout << "Ваш выбор > ";
+    cin >> user_chose;*/
 
-    cout << "Select a size of cola:" << endl;
-    cout << "1 - Small - " << size_price[0] << " RUB" << endl;
-    cout << "2 - Average - " << size_price[1] << " RUB" << endl;
-    cout << "3 - Big - " << size_price[2] << " RUB" << endl;
-    cout << "Your chose >";
-    cin >> user_chose;
+    cout << "Как много бутылок хотите купить?" << endl;
+    do
+    {
+        count = get_input<int>("Ваш выбор > ");
+        if (count < 1) {
+            cout << "Вы не можете заказать такое количество!\n";
+        }
+    } while (count < 1);
 
-    cout << "How many bottles of cola do you want to buy?" << endl << "Your chose >";
-    cin >> count;
-
-    string output = to_string(count) + " x " + type[user_chose - 1] + " Bottle of Cola: " + to_string(count) + " x " + to_string(size_price[user_chose - 1]) + " = " + to_string(count * size_price[user_chose - 1]) + " RUB\n";
+    string output = to_string(count) + " x " + type[user_choose - 1] + " бутылка колы: " + to_string(count) + " x " + to_string(size_price[user_choose - 1]) + " = " + to_string(count * size_price[user_choose - 1]) + " руб\n";
     order.push_back(output);
-    summa += size_price[user_chose - 1] * count;
+    summa += size_price[user_choose - 1] * count;
 
 
 }
 void order_popcorn(int& summa, vector<string>& order) {
     int count;
-    int user_chose;
-    int size_price[3] = { 40,75,100 };
-    string type[3] = { "Small","Average","Big" };
+    int user_choose;
+    const int CountOfProdustion = 3;
+    int size_price[CountOfProdustion] = { 40,75,100 };
+    string type[CountOfProdustion] = { "Маленькое","Среднее","Большое" };
+    system("cls");
+    cout << "\n\n\n\nВыберите размер ведра попкорна:" << endl;
+    user_choose = menu.ChooseSize(size_price, type);
+    /*cout << "1 - Маленькая - " << size_price[0] << " РУБ" << endl;
+    cout << "2 - Средняя - " << size_price[1] << " РУБ" << endl;
+    cout << "3 - Большая - " << size_price[2] << " РУБ" << endl;
+    cout << "Ваш выбор > ";
+    cin >> user_chose;*/
 
-    cout << "Select a size of cola:" << endl;
-    cout << "1 - Small - " << size_price[0] << " RUB" << endl;
-    cout << "2 - Average - " << size_price[1] << " RUB" << endl;
-    cout << "3 - Big - " << size_price[2] << " RUB" << endl;
-    cout << "Your chose : ";
+    cout << "Как много попкорна хотите купить?" << endl;
+    do
+    {
+        count = get_input<int>("Ваш выбор > ");
+        if (count < 1) {
+            cout << "Вы не можете заказать такое количество!\n";
+        }
+    } while (count < 1);
 
-    cin >> user_chose;
-
-    cout << "How many buckets of popcorn do you want to order?" << endl << "Your chose >";
-    cin >> count;
-
-    string output = to_string(count) + " x " + type[user_chose - 1] + " Popcorn: " + to_string(count) + " x " + to_string(size_price[user_chose - 1]) + " = " + to_string(count * size_price[user_chose - 1]) + " RUB\n";
+    string output = to_string(count) + " x " + type[user_choose - 1] + " ведро попкорна: " + to_string(count) + " x " + to_string(size_price[user_choose - 1]) + " = " + to_string(count * size_price[user_choose - 1]) + " руб\n";
     order.push_back(output);
-    summa += size_price[user_chose - 1] * count;
+    summa += size_price[user_choose - 1] * count;
 
 }
 
 
 
 void print_order(int summa, const vector<string>& order) {
-    cout << "Your order:" << endl << endl;
-    for (const auto & i : order) {
+    cout << "Ваш заказ:" << endl << endl;
+    for (const auto& i : order) {
         cout << i;
     }
 
-    cout << endl << "Total: " << summa << " RUB" << endl;
+    cout << endl << "Всего: " << summa << " RUB" << endl;
 }
 
 
 void movie_merchandaise() {
     int result_sum = 0;
     vector<string> order;
-    char next;
-
-    cout << "Would you like to purchase any drinks or snacks for the movie?" << endl << "Type Y - for Yes or type N - for No" << endl;
-    next = get_input<char>("Your chose >");
-    while (!(next == 'Y' || next == 'N')) {
-        cout << "РќРµРєРѕСЂСЂРµРєС‚РЅС‹Р№ РІРІРѕРґ! РџРѕРїСЂРѕР±СѓР№С‚Рµ РµС‰С‘ СЂР°Р·!" << endl;
-        next = get_input<char>("Your chose >");
-    }
-    while (next == 'Y') {
+    vector<string>ProductList = {"Заказать колу", "Заказать попкорн"};
+    bool next;
+    system("cls");
+    cout << "\n\n\n\nВы бы хотели заказать напитки или закуски?" << endl;
+    next = menu.YesOrNo();
+    while (next == true) {
         int user_chose;
-        cout << "Select a product:\n1 - Order Cola\n2 - Order Popcorn" << endl << "Your chose >";
-        cin >> user_chose;
+        system("cls");
+        cout << "\n\n\nВыберите продукт:" << endl;
+        user_chose = menu.ChooseProduct(ProductList);
         switch (user_chose) {
         case 1:
             order_cola(result_sum, order);
@@ -93,16 +106,14 @@ void movie_merchandaise() {
             order_popcorn(result_sum, order);
             break;
         }
-        cout << "Continue ordering?" << endl << "Type Y - for Yes or type N - for No" << endl << "Your chose >";
-        next = get_input<char>("Your chose >");
-        while (!(next == 'Y' || next == 'N')) {
-            cout << "РќРµРєРѕСЂСЂРµРєС‚РЅС‹Р№ РІРІРѕРґ! РџРѕРїСЂРѕР±СѓР№С‚Рµ РµС‰С‘ СЂР°Р·!" << endl;
-            next = get_input<char>("Your chose >");
-        }
+        system("cls");
+        cout << "\n\n\n\nЗаказать что-то ещё?" << endl;
+        next = menu.YesOrNo();
     }
 
     print_order(result_sum, order);
-    // РІС‹Р·РѕРІ С„СѓРЅРєС†РёРё РѕРїР»Р°С‚С‹
+    system("pause");
+    // вызов функции оплаты
 }
 
 
