@@ -1,9 +1,10 @@
-//Основаная библиотека
 #include <iostream>
 //Библиотека для работы со строками
 #include <string>
+#include "includes.h"
+
 using namespace std;
-/*Артём: для удобста я решил сделать класс,
+/*Артём: для удобства я решил сделать класс,
  который будет использоваться для валидации мусорных данных
 */
 class BestInput {
@@ -92,9 +93,9 @@ public:
 			try {
 				//Ввод числа как строки
 				getline(cin, str);
-				//Замена точек на запятые или наооборот (зависит от setlocale()) для дальнейсшей конвертации в double
-				//str = ReplaceDotToComma(str); //Если местоположение было иземенено setlocale()
-				str = ReplaceCommaToDot(str);	//Если местоположение не было иземенено setlocale()
+				//Замена точек на запятые или наоборот (зависит от setlocale()) для дальнейшей конвертации в double
+				//str = ReplaceDotToComma(str); //Если местоположение было изменено setlocale()
+				str = ReplaceCommaToDot(str);	//Если местоположение не было изменено setlocale()
 				//Конвертация string в double
 				num = stod(str);
 				flag = false;
@@ -120,8 +121,8 @@ public:
 				getline(cin, str);
 				number = stoi(str.c_str());
 				flag = false;
-				//Функция stoi игнорирует точки и сиволы после числовых значений в строке
-				//Поэтому числовое и строковое знаечения могут отличаться по длине
+				//Функция stoi игнорирует точки и символы после числовых значений в строке
+				//Поэтому числовое и строковое значения могут отличаться по длине
 				if (to_string(number).compare(str) != 0) {
 					cout << "Incorrect input, enter an integer: ";
 					flag = true;
