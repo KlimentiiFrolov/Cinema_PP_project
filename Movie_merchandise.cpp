@@ -95,7 +95,7 @@ void print_order(int summa, const vector<string>& order) {
 }
 
 
-void movie_merchandaise() {
+bool movie_merchandaise() {
     int result_sum = 0;
     vector<string> order;
     vector<string>ProductList = {"Заказать колу", "Заказать попкорн", "Чипсы"};
@@ -103,6 +103,9 @@ void movie_merchandaise() {
     system("cls");
     cout << "\n\n\n\nВы бы хотели заказать напитки или закуски?" << endl;
     next = menu.YesOrNo();
+    if (!next) {
+        return false;
+    }
     while (next) {
         int user_chose;
         system("cls");
@@ -127,6 +130,7 @@ void movie_merchandaise() {
     print_order(result_sum, order);
     system("pause");
     // вызов функции оплаты
+    return true;
 }
 
 

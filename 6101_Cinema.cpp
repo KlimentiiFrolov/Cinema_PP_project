@@ -29,16 +29,8 @@ void show_cinema(char**, int, int);
 bool buy_ticket(char**, int, int); //принимает зал(массив) номер ряда номер места
 char** create_hall(int, int);
 void view_movie_schedules();
-
-/* От Артёма: функции для имитации оплаты и покупки */
-// Перечисление различных способов оплаты.
-//enum Operation {
-//	Cash = 0,
-//	Card = 1,
-//	QRcode = 2
-//};
 // Выбор метода оплаты.
-void ChoosePaymentMethod();
+void ChoosePaymentMethod(bool);
 // Функция, где в зависимости выбранного способа оплаты, будет происходить конкретная оплата.
 bool Oplata(int);
 // Генерация QR-кода.
@@ -97,8 +89,8 @@ bool h_file_load(char** arr, int n, int m, const char* filename = "cinema.dat") 
 	if (!f.is_open())
 		return false;
 
-	int fn, fm;
 	// читаем размеры
+	int fn, fm;
 	f.read(reinterpret_cast<char*>(&fn), sizeof fn);
 	f.read(reinterpret_cast<char*>(&fm), sizeof fm);
 
@@ -116,6 +108,7 @@ bool h_file_load(char** arr, int n, int m, const char* filename = "cinema.dat") 
 
 int const ROWS = 3;
 int const COLS = 10;
+int const TicketCost = 350;
 char** cinema1 = nullptr;
 int main() {
 	cinema1 = create_hall(ROWS, COLS);
@@ -137,7 +130,7 @@ int main() {
  * switch (choice_movie) сменить на пробег циклом по listFilms
  * */
 void view_movie_schedules() {
-	Menu menu;
+	Menu menu(ROWS, COLS);
 	int choice_movie; //Инициализация переменных для выбора фильма и для выбора сеанса
 	bool answer = false; //Инициализируем переменную для возврата к выбору меню
 	//Для создания меню, мне нужно было протестить, если есть несколько фильмов
@@ -210,22 +203,43 @@ void view_movie_schedules() {
 			cout << "\nХотите забронировать, купить или вернуться назад?";
 			char choose = menu.ChooseTicket();
 			system("cls");
+			int TicketBills;
+			string output;
+			bool PayGoOn = true;
 			switch (choose) { // Переход к другим функциям.
-                case('R'):
-                    cout << "\n\n\n\n\n\n\t\t\tВыберите Место(а) для бронирования:" << endl;
-                    menu.ChoosePlaceOnCinema(cinema1, ROWS, COLS, true);
-                    movie_merchandaise();
-                    ChoosePaymentMethod();
-                    break;
-                case('P'):
-                    cout << "\n\n\n\n\n\n\t\t\tВыберите Место(а) для покупки:" << endl;
-                    menu.ChoosePlaceOnCinema(cinema1, ROWS, COLS, false);
-                    movie_merchandaise();
-                    ChoosePaymentMethod();
-                    break;
-                default:
-                    view_movie_schedules();
-                    break;
+			case('R'):
+				cout << "\n\n\n\n\n\n\t\t\tВыберите Место(а) для бронирования:" << endl;
+				menu.ChoosePlaceOnCinema(cinema1, ROWS, COLS, true);
+				//ВЫставление счёта за билеты
+				system("cls");
+				TicketBills = menu.Bills(TicketCost);
+				output = to_string(TicketBills / TicketCost) + " x " + " билет на фильм: " + \
+					to_string(TicketBills / TicketCost) + " x " + to_string(TicketCost) + " = " + \
+					to_string(TicketBills) + " рублей\n";
+				cout << output;
+				system("pause");
+				ChoosePaymentMethod(PayGoOn);
+				PayGoOn = movie_merchandaise();
+				ChoosePaymentMethod(PayGoOn);
+				break;
+			case('P'):
+				cout << "\n\n\n\n\n\n\t\t\tВыберите Место(а) для покупки:" << endl;
+				menu.ChoosePlaceOnCinema(cinema1, ROWS, COLS, false);
+				//ВЫставление счёта за билеты
+				system("cls");
+				TicketBills = menu.Bills(TicketCost);
+				output = to_string(TicketBills / TicketCost) + " x " + " билет на фильм: " + \
+					to_string(TicketBills / TicketCost) + " x " + to_string(TicketCost) + " = " + \
+					to_string(TicketBills) + " рублей\n";
+				cout << output;
+				system("pause");
+				ChoosePaymentMethod(PayGoOn);
+				PayGoOn = movie_merchandaise();
+				ChoosePaymentMethod(PayGoOn);
+				break;
+			default:
+				view_movie_schedules();
+				break;
 			}
 		}
 	}
@@ -298,19 +312,21 @@ bool Oplata(int num) {
 	}
 	return false;
 }
-void ChoosePaymentMethod() {
-	bool flag;
-	Menu menu;
-	vector <string> PayList{"Наличные","Карта","QR-code"};
-	do
-	{
-		system("cls");
-		cout << "\n\nВыберите метод оплаты:";
-		int temp = menu.ChooseProduct(PayList);
-		Oplata(temp);
-		cout << '\n';
-		system("pause");
-		system("cls");
-		cout << "\n\n\nВы согласны с выбором оплаты? Если нет, мы вернём затраченные средства";
-	} while (!menu.YesOrNo());
+void ChoosePaymentMethod(bool letsPay = true) {
+	if (letsPay) {
+		bool flag;
+		Menu menu;
+		vector <string> PayList{"Наличные", "Карта", "QR-code"};
+		do
+		{
+			system("cls");
+			cout << "\n\nВыберите метод оплаты:";
+			int temp = menu.ChooseProduct(PayList);
+			Oplata(temp);
+			cout << '\n';
+			system("pause");
+			system("cls");
+			cout << "\n\n\nВы согласны с выбором оплаты? Если нет, мы вернём затраченные средства";
+		} while (!menu.YesOrNo());
+	}
 }
