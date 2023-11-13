@@ -11,22 +11,22 @@ void order_cola(int& summa, vector<string>& order) {
     int user_choose;
     const int CountOfProduction = 3;
     int size_price[CountOfProduction] = {40, 75, 100 };
-    string type[CountOfProduction] = {"Маленькая", "Средняя", "Большая" };
+    string type[CountOfProduction] = {"РњР°Р»РµРЅСЊРєР°СЏ", "РЎСЂРµРґРЅСЏСЏ", "Р‘РѕР»СЊС€Р°СЏ" };
     system("cls");
-    cout << "\n\n\n\nВыберите размер колы:" << endl;
+    cout << "\n\n\n\nР’С‹Р±РµСЂРёС‚Рµ СЂР°Р·РјРµСЂ РєРѕР»С‹:" << endl;
     user_choose = menu.ChooseSize(size_price, type);
-    cout << "Как много бутылок хотите купить?" << endl;
+    cout << "РљР°Рє РјРЅРѕРіРѕ Р±СѓС‚С‹Р»РѕРє С…РѕС‚РёС‚Рµ РєСѓРїРёС‚СЊ?" << endl;
     do
     {
-        count = get_input<int>("Ваш выбор >");
+        count = get_input<int>("Р’Р°С€ РІС‹Р±РѕСЂ >");
         if (count < 1) {
-            cout << "Вы не можете заказать такое количество!\n";
+            cout << "Р’С‹ РЅРµ РјРѕР¶РµС‚Рµ Р·Р°РєР°Р·Р°С‚СЊ С‚Р°РєРѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ!\n";
         }
     } while (count < 1);
 
-    string output = to_string(count) + " x " + type[user_choose - 1] + " бутылка колы: " + to_string(count) + \
+    string output = to_string(count) + " x " + type[user_choose - 1] + " Р±СѓС‚С‹Р»РєР° РєРѕР»С‹: " + to_string(count) + \
         " x " + to_string(size_price[user_choose - 1]) + " = " + \
-        to_string(count * size_price[user_choose - 1]) + " рублей\n";
+        to_string(count * size_price[user_choose - 1]) + " СЂСѓР±Р»РµР№\n";
     order.push_back(output);
     summa += size_price[user_choose - 1] * count;
 
@@ -37,20 +37,20 @@ void order_popcorn(int& summa, vector<string>& order) {
     int user_choose;
     const int CountOfProduction = 3;
     int size_price[CountOfProduction] = {40, 75, 100 };
-    string type[CountOfProduction] = {"Маленькое", "Среднее", "Большое" };
+    string type[CountOfProduction] = {"РњР°Р»РµРЅСЊРєРѕРµ", "РЎСЂРµРґРЅРµРµ", "Р‘РѕР»СЊС€РѕРµ" };
     system("cls");
-    cout << "\n\n\n\nВыберите размер ведра попкорна:" << endl;
+    cout << "\n\n\n\nР’С‹Р±РµСЂРёС‚Рµ СЂР°Р·РјРµСЂ РІРµРґСЂР° РїРѕРїРєРѕСЂРЅР°:" << endl;
     user_choose = menu.ChooseSize(size_price, type);
-    cout << "Как много попкорна хотите купить?" << endl;
+    cout << "РљР°Рє РјРЅРѕРіРѕ РїРѕРїРєРѕСЂРЅР° С…РѕС‚РёС‚Рµ РєСѓРїРёС‚СЊ?" << endl;
     do {
-        count = get_input<int>("Ваш выбор >");
+        count = get_input<int>("Р’Р°С€ РІС‹Р±РѕСЂ >");
         if (count < 1) {
-            cout << "Вы не можете заказать такое количество!\n";
+            cout << "Р’С‹ РЅРµ РјРѕР¶РµС‚Рµ Р·Р°РєР°Р·Р°С‚СЊ С‚Р°РєРѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ!\n";
         }
     } while (count < 1);
-    string output = to_string(count) + " x " + type[user_choose - 1] + " ведро попкорна: " + \
+    string output = to_string(count) + " x " + type[user_choose - 1] + " РІРµРґСЂРѕ РїРѕРїРєРѕСЂРЅР°: " + \
         to_string(count) +  " x " + to_string(size_price[user_choose - 1]) + " = " + \
-        to_string(count * size_price[user_choose - 1]) + " рублей\n";
+        to_string(count * size_price[user_choose - 1]) + " СЂСѓР±Р»РµР№\n";
     order.push_back(output);
     summa += size_price[user_choose - 1] * count;
 
@@ -60,25 +60,25 @@ void order_chips(int& summa, vector<string>& order) {
     int type_chips = 0, user_size;
     const int CountOfProduction = 3;
     int size_price[CountOfProduction] = {49, 89, 129};
-    string type[CountOfProduction] = { "Маленькая","Средняя","Большая" };
-    vector<string> type_product = { "Лук", "Сметана и зелень", "Краб", "Сыр" };
+    string type[CountOfProduction] = { "РњР°Р»РµРЅСЊРєР°СЏ","РЎСЂРµРґРЅСЏСЏ","Р‘РѕР»СЊС€Р°СЏ" };
+    vector<string> type_product = { "Р›СѓРє", "РЎРјРµС‚Р°РЅР° Рё Р·РµР»РµРЅСЊ", "РљСЂР°Р±", "РЎС‹СЂ" };
     system("cls");
-    cout << "\n\n\n\nВыберите вкус чипсов:" << endl;
+    cout << "\n\n\n\nР’С‹Р±РµСЂРёС‚Рµ РІРєСѓСЃ С‡РёРїСЃРѕРІ:" << endl;
     type_chips = menu.ChooseProduct(type_product);
     system("cls");
-    cout << "\n\n\n\nРазмер:" << endl;
+    cout << "\n\n\n\nР Р°Р·РјРµСЂ:" << endl;
     user_size = menu.ChooseSize(size_price, type);
-    cout << "Как много чипсов хотите купить?" << endl;
+    cout << "РљР°Рє РјРЅРѕРіРѕ С‡РёРїСЃРѕРІ С…РѕС‚РёС‚Рµ РєСѓРїРёС‚СЊ?" << endl;
     do {
-        count = get_input<int>("Ваш выбор >");
+        count = get_input<int>("Р’Р°С€ РІС‹Р±РѕСЂ >");
         if (count < 1) {
-            cout << "Вы не можете заказать такое количество!\n";
+            cout << "Р’С‹ РЅРµ РјРѕР¶РµС‚Рµ Р·Р°РєР°Р·Р°С‚СЊ С‚Р°РєРѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ!\n";
         }
     } while (count < 1);
 
     string output = to_string(count) + " x " + type_product[type_chips - 1] + " " + type[user_size - 1] + \
-        " чипсы: " + to_string(count) + " x " + to_string(size_price[user_size - 1]) + " = " + \
-        to_string(count * size_price[user_size - 1]) + " рублей\n";
+        " С‡РёРїСЃС‹: " + to_string(count) + " x " + to_string(size_price[user_size - 1]) + " = " + \
+        to_string(count * size_price[user_size - 1]) + " СЂСѓР±Р»РµР№\n";
     order.push_back(output);
     summa += size_price[user_size - 1] * count;
 
@@ -86,22 +86,22 @@ void order_chips(int& summa, vector<string>& order) {
 
 void print_order(int summa, const vector<string>& order) {
     if (!order.empty()) {
-        cout << "Заказ:" << endl << endl;
+        cout << "Р—Р°РєР°Р·:" << endl << endl;
         for (const auto &i: order) {
             cout << i;
         }
     }
-    cout << endl << "Итого: " << summa << " рублей" << endl;
+    cout << endl << "РС‚РѕРіРѕ: " << summa << " СЂСѓР±Р»РµР№" << endl;
 }
 
 
 bool movie_merchandaise() {
     int result_sum = 0;
     vector<string> order;
-    vector<string>ProductList = {"Заказать колу", "Заказать попкорн", "Чипсы"};
+    vector<string>ProductList = {"Р—Р°РєР°Р·Р°С‚СЊ РєРѕР»Сѓ", "Р—Р°РєР°Р·Р°С‚СЊ РїРѕРїРєРѕСЂРЅ", "Р§РёРїСЃС‹"};
     bool next;
     system("cls");
-    cout << "\n\n\n\nВы бы хотели заказать напитки или закуски?" << endl;
+    cout << "\n\n\n\nР’С‹ Р±С‹ С…РѕС‚РµР»Рё Р·Р°РєР°Р·Р°С‚СЊ РЅР°РїРёС‚РєРё РёР»Рё Р·Р°РєСѓСЃРєРё?" << endl;
     next = menu.YesOrNo();
     if (!next) {
         return false;
@@ -109,7 +109,7 @@ bool movie_merchandaise() {
     while (next) {
         int user_chose;
         system("cls");
-        cout << "\n\n\nВыберите продукт:" << endl;
+        cout << "\n\n\nР’С‹Р±РµСЂРёС‚Рµ РїСЂРѕРґСѓРєС‚:" << endl;
         user_chose = menu.ChooseProduct(ProductList);
         switch (user_chose) {
             case 1:
@@ -123,13 +123,13 @@ bool movie_merchandaise() {
                 break;
         }
         system("cls");
-        cout << "\n\n\n\nЗаказать что-то ещё?" << endl;
+        cout << "\n\n\n\nР—Р°РєР°Р·Р°С‚СЊ С‡С‚Рѕ-С‚Рѕ РµС‰С‘?" << endl;
         next = menu.YesOrNo();
     }
 
     print_order(result_sum, order);
     system("pause");
-    // вызов функции оплаты
+    // РІС‹Р·РѕРІ С„СѓРЅРєС†РёРё РѕРїР»Р°С‚С‹
     return true;
 }
 

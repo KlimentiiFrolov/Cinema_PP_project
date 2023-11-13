@@ -5,16 +5,16 @@
 #include<Windows.h>
 #include<time.h>
 #include<conio.h>
+#include "film_hall.h"
+
 //#include<fstream>
 //#include <io.h>
 //#include <stack>
 //#include <cmath>
 using namespace std;
 
-
-
 class Menu {
-    void ShowChooseFilm(vector<vector<string>> listFilms, int poz) const
+    void ShowChooseFilm(const vector<Film>& listFilms, int poz) const
     {
         int countOfChooses = listFilms.size();
 
@@ -29,14 +29,14 @@ class Menu {
             {
                 SetColor(White, Black);
             }
-            cout << listFilms[i][0] << '\n';
+            cout << listFilms[i].name << '\n';
         }
         SetColor(White, Black);
     }
     void ShowChooseTicket(int poz) const
     {
         const int countOfChooses = 3;
-        char menuConsis[countOfChooses][100] = { "Забронировать", "Купить", "Назад" };
+        char menuConsis[countOfChooses][100] = { "Р—Р°Р±СЂРѕРЅРёСЂРѕРІР°С‚СЊ", "РљСѓРїРёС‚СЊ", "РќР°Р·Р°Рґ" };
 
         for (size_t i = 0; i < countOfChooses; i++)
         {
@@ -55,7 +55,7 @@ class Menu {
     }
     void ShowYesOrNo(int poz) const {
         const int countOfChooses = 2;
-        char menuConsis[countOfChooses][100] = { "Да", "Нет" };
+        char menuConsis[countOfChooses][100] = { "Р”Р°", "РќРµС‚" };
 
         for (size_t i = 0; i < countOfChooses; i++)
         {
@@ -160,7 +160,7 @@ class Menu {
                 }
                 cout << hall[i][j];
                 SetCursor(25, 8 + columns + 3);
-                cout << "Сохранить";
+                cout << "РЎРѕС…СЂР°РЅРёС‚СЊ";
             }
 
         }
@@ -221,7 +221,7 @@ public:
         COORD myCoords = { static_cast<SHORT>(x), static_cast<SHORT>(y) };
         SetConsoleCursorPosition(hStdOut, myCoords);
     }
-    int ChooseFilm(const vector<vector<string>>& listFilms)
+    int ChooseFilm(const vector<Film>& listFilms)
     {
         int number = 0, key;
         int countOfChooses = listFilms.size();
@@ -229,7 +229,7 @@ public:
         do
         {
             ShowChooseFilm(listFilms, number);
-            key = _getch();//получаем код нажатой клавиши
+            key = _getch();//РїРѕР»СѓС‡Р°РµРј РєРѕРґ РЅР°Р¶Р°С‚РѕР№ РєР»Р°РІРёС€Рё
             ShowChooseFilm(listFilms, number);
             switch (key)
             {
@@ -254,7 +254,7 @@ public:
         const int countOfChooses = 3;
         do {
             ShowChooseTicket(number);
-            key = _getch();//получаем код нажатой клавиши
+            key = _getch();//РїРѕР»СѓС‡Р°РµРј РєРѕРґ РЅР°Р¶Р°С‚РѕР№ РєР»Р°РІРёС€Рё
             ShowChooseTicket(number);
             switch (key) {
             case Up:
@@ -293,7 +293,7 @@ public:
         do
         {
             ShowYesOrNo(number);
-            key = _getch();//получаем код нажатой клавиши
+            key = _getch();//РїРѕР»СѓС‡Р°РµРј РєРѕРґ РЅР°Р¶Р°С‚РѕР№ РєР»Р°РІРёС€Рё
             ShowYesOrNo(number);
             switch (key)
             {
@@ -319,7 +319,7 @@ public:
         do
         {
             ShowChooseSize(number, cost, type);
-            key = _getch();//получаем код нажатой клавиши
+            key = _getch();//РїРѕР»СѓС‡Р°РµРј РєРѕРґ РЅР°Р¶Р°С‚РѕР№ РєР»Р°РІРёС€Рё
             ShowChooseSize(number, cost, type);
             switch (key)
             {
@@ -344,7 +344,7 @@ public:
         do
         {
             ShowChooseProduct(number, productList);
-            key = _getch();//получаем код нажатой клавиши
+            key = _getch();//РїРѕР»СѓС‡Р°РµРј РєРѕРґ РЅР°Р¶Р°С‚РѕР№ РєР»Р°РІРёС€Рё
             ShowChooseProduct(number, productList);
             switch (key)
             {
@@ -371,7 +371,7 @@ public:
         do
         {
             ShowChoosePlaceOnCinema(hall, rows, columns, numberX, numberY);
-            key = _getch();//получаем код нажатой клавиши
+            key = _getch();//РїРѕР»СѓС‡Р°РµРј РєРѕРґ РЅР°Р¶Р°С‚РѕР№ РєР»Р°РІРёС€Рё
             ShowChoosePlaceOnCinema(hall, rows, columns, numberX, numberY);
             switch (key)
             {
@@ -399,7 +399,7 @@ public:
             system("cls");
             cout << "\n\t";
             PrintCinemaHall(hall, rows, columns);
-            cout << "\nВы уверены в выборе?";
+            cout << "\nР’С‹ СѓРІРµСЂРµРЅС‹ РІ РІС‹Р±РѕСЂРµ?";
             bool flag = YesOrNo();
             if (!flag) {
                 //return true;

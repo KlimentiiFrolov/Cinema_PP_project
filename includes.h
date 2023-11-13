@@ -22,7 +22,7 @@ int verefecation_Purchase_of_tickets();
 int Purchase_of_tickets();
 
 // bestinput.cpp
-// нужно было делать по-другому, если сделать так придется переписывать весь bestinput.cpp
+// РЅСѓР¶РЅРѕ Р±С‹Р»Рѕ РґРµР»Р°С‚СЊ РїРѕ-РґСЂСѓРіРѕРјСѓ, РµСЃР»Рё СЃРґРµР»Р°С‚СЊ С‚Р°Рє РїСЂРёРґРµС‚СЃСЏ РїРµСЂРµРїРёСЃС‹РІР°С‚СЊ РІРµСЃСЊ bestinput.cpp
 /*class BestInput{
 	std::string EraseNulls(std::string num);
 	std::string ReplaceDotToComma(std::string str);

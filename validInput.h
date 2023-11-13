@@ -19,7 +19,7 @@ T get_input(const std::string& prompt) {
         if (ss >> value && ss.peek() == -1) { // ss.eof
             return value;
         }
-        std::cout << "Îøèáêà ââîäà! Ïîæàëóéñòà, ïîïðîáóéòå ñíîâà!\n";
+        std::cout << "ÐžÑˆÐ¸Ð±ÐºÐ° Ð²Ð²Ð¾Ð´Ð°! ÐŸÐ¾Ð¶Ð°Ð»ÑƒÐ¹ÑÑ‚Ð°, Ð¿Ð¾Ð¿Ñ€Ð¾Ð±ÑƒÐ¹Ñ‚Ðµ ÑÐ½Ð¾Ð²Ð°!\n";
     }
 }
 #endif //CINEMA_PP_PROJECT_VALIDINPUT_H
