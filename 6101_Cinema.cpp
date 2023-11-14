@@ -32,17 +32,20 @@ bool Oplata(int);
 // Генерация QR-кода.
 string QRgeneration();
 
-
+//Задание костант для площади залов и стоимости билета
 int const ROWS = 3;
 int const COLS = 10;
 int const TicketCost = 350;
+//Вектор фильмов
 static vector<Film> listFilms;
+//Главная функция main(), гдк начинается работа программы
 int main() {
 	Menu menu;
 	srand(time(nullptr));
+	//Смена кодировки консоли для русского текста
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
-
+	//Загузка информации о фильмах из файла
 	try {
 		listFilms = loadFilms("films.txt");
 	}
@@ -53,7 +56,9 @@ int main() {
 
 	do {
 		system("cls");
+		//Вызов функции кассира
 		view_movie_schedules();
+		//Сохранение данных о фильме
 		saveFilms(listFilms, "films.txt");
 		system("cls");
 		cout << "\n\n\n\nХотите продолжить?";
@@ -62,22 +67,27 @@ int main() {
 void view_movie_schedules() {
 	Menu menu(ROWS, COLS);
 	int choice_movie; //Инициализация переменных для выбора фильма и для выбора сеанса
+	//Доступные фильмы
 	cout << "\nФильмы доступные на 01 января: \n\n";
 	for (size_t i = 0; i < listFilms.size(); ++i) {
 		cout << i + 1 << ") " << listFilms[i].name << endl;
 	}
 	cout << endl;
+	//Выбор фильма
 	cout << "Выберите фильм: ";
 	choice_movie = menu.ChooseFilm(listFilms);
 	Film& chosen_film = listFilms[choice_movie - 1];
+	//Вывод информации о фильме
 	cout << chosen_film.desc << endl;
 	system("pause");
 	system("cls");
 	menu.SetCursor(24, 6);
+	//Выбор сеанса
 	cout << "\nВыберите время: ";
 	Hall& hall = chosen_film.halls[menu.ChooseHall(chosen_film.halls) - 1];
 	system("cls");
 	menu.SetCursor(24, 6);
+	//Выбор типа билета
 	cout << "\nХотите забронировать, купить или вернуться назад?";
 	int choose = menu.ChooseTicket();
 	system("cls");
@@ -87,6 +97,7 @@ void view_movie_schedules() {
 	bool back = false;
 	switch (choose) { // Переход к другим функциям.
 	case(1):
+		//Выбор бронирования
 		cout << "\n\n\n\n\n\n\t\t\tВыберите Место(а) для бронирования:" << endl;
 		back = menu.ChoosePlaceOnCinema(hall.data, hall.rows, hall.cols, true);
 		//ВЫставление счёта за билеты
@@ -101,15 +112,18 @@ void view_movie_schedules() {
 			system("pause");
 			back = ChoosePaymentMethod(PayGoOn);
 			if (back) {
+				//Рекрсивно возвращаемся к началу функции
 				view_movie_schedules();
 			}
 			PayGoOn = movie_merchandaise();
 			back = ChoosePaymentMethod(PayGoOn);
 			if (back) {
+				//Рекрсивно возвращаемся к началу функции
 				view_movie_schedules();
 			}
 		}
 		else {
+			//Рекрсивно возвращаемся к началу функции
 			view_movie_schedules();
 		}
 		break;
@@ -127,24 +141,28 @@ void view_movie_schedules() {
 			system("pause");
 			back = ChoosePaymentMethod(PayGoOn);
 			if (back) {
+				//Рекрсивно возвращаемся к началу функции
 				view_movie_schedules();
 			}
 			PayGoOn = movie_merchandaise();
 			back = ChoosePaymentMethod(PayGoOn);
 			if (back) {
+				//Рекрсивно возвращаемся к началу функции
 				view_movie_schedules();
 			}
 		}
 		else {
+			//Рекрсивно возвращаемся к началу функции
 			view_movie_schedules();
 		}
 		break;
 	default:
+		//Рекрсивно возвращаемся к началу функции
 		view_movie_schedules();
 		break;
 	}
 }
-
+// QRgeneration генерирует QRcode для оплаты
 string QRgeneration() {
 	const int lengthOfCode = 5;
 	string QR = "";
@@ -161,6 +179,7 @@ string QRgeneration() {
 	}
 	return QR;
 }
+// Oplata отвечает за выбор способа оплаты и имитацию оплаты
 bool Oplata(int num) {
 	if (num == 1) {
 		cout << "Производится оплата...";
@@ -183,6 +202,7 @@ bool Oplata(int num) {
 	}
 	return true;
 }
+// ChoosePaymentMethod позволяет пользователю выбрать способ оплаты.
 bool ChoosePaymentMethod(bool letsPay = true) {
 	bool flag = false;
 	if (letsPay) {
