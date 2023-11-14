@@ -5,16 +5,46 @@
 #include<Windows.h>
 #include<time.h>
 #include<conio.h>
+#include "film_hall.h"
+
 //#include<fstream>
 //#include <io.h>
 //#include <stack>
 //#include <cmath>
 using namespace std;
 
-
-
 class Menu {
-    void ShowChooseFilm(vector<vector<string>> listFilms, int poz) const
+    void ShowChooseHall(const vector<Hall>& listFall, int poz) const
+    {
+        int countOfChooses = listFall.size();
+        int shift = 0;
+        for (size_t i = 0; i < countOfChooses; i++)
+        {
+            SetCursor(25, 8 + i + shift);
+            if (poz == i)
+            {
+                SetColor(LightGreen, Black);
+            }
+            else
+            {
+                SetColor(White, Black);
+            }
+            SetCursor(22, 7 + i + shift);
+            cout << i + 1 << ")" << listFall[i].time;
+            for (int j = 0; j < listFall[i].rows; j++)
+            {
+                for (int q = 0; q < listFall[i].cols; q++)
+                {
+                    SetCursor(25+q, 8 + i + j + shift);
+                    cout << listFall[i].data[j][q] << ' ';
+                }
+                cout << "\n";
+            }
+            shift += 3;
+        }
+        SetColor(White, Black);
+    }
+    void ShowChooseFilm(const vector<Film>& listFilms, int poz) const
     {
         int countOfChooses = listFilms.size();
 
@@ -29,7 +59,7 @@ class Menu {
             {
                 SetColor(White, Black);
             }
-            cout << listFilms[i][0] << '\n';
+            cout << listFilms[i].name << '\n';
         }
         SetColor(White, Black);
     }
@@ -98,7 +128,7 @@ class Menu {
             {
                 SetColor(White, Black);
             }
-            cout << i+1 << " - " << type[i] << " - " << cost[i] << '\n';
+            cout << i + 1 << " - " << type[i] << " - " << cost[i] << '\n';
         }
         SetColor(White, Black);
     }
@@ -120,11 +150,11 @@ class Menu {
         }
         SetColor(White, Black);
     }
-    void ShowChoosePlaceOnCinema(char** const hall, int const rows, int const columns, int pozX,int pozY) const {
+    void ShowChoosePlaceOnCinema(char** const hall, int const rows, int const columns, int pozX, int pozY) const {
         int temp = 0;
         SetColor(White, Black);
         for (int j = 0; j < columns; j++) {
-            SetCursor(24 + j+temp, 7);
+            SetCursor(24 + j + temp, 7);
             temp += 2;
             cout << '|' << j + 1 << '|';
         }
@@ -147,7 +177,7 @@ class Menu {
                 else if (i == pozX && j == pozY && hall[i][j] == '1') {
                     SetColor(Blue, Black);
                 }
-                
+
                 else if (pozX == rows) {
                     SetColor(Cyan, Black);
                 }
@@ -166,7 +196,7 @@ class Menu {
         }
         SetColor(White, Black);
     }
-    void PrintCinemaFall(char** const hall, int const rows, int const columns) const {
+    void PrintCinemaHall(char** const hall, int const rows, int const columns) const {
         int temp = 0;
         SetColor(White, Black);
         for (int j = 0; j < columns; j++) {
@@ -201,6 +231,9 @@ class Menu {
             }
         }
     }
+    int** ChoosePlaces;
+    int rows;
+    int columns;
 public:
     enum Color {
         Black, Blue, Green, Cyan, Red,
@@ -215,10 +248,10 @@ public:
     enum Direction { Up = 72, Left = 75, Right = 77, Down = 80, Enter = 13, esc = 27, space = 32 };
     void SetCursor(int x, int y) const
     {
-        COORD myCoords = {static_cast<SHORT>(x), static_cast<SHORT>(y)};
+        COORD myCoords = { static_cast<SHORT>(x), static_cast<SHORT>(y) };
         SetConsoleCursorPosition(hStdOut, myCoords);
     }
-    int ChooseFilm(const vector<vector<string>>& listFilms)
+    int ChooseFilm(const vector<Film>& listFilms)
     {
         int number = 0, key;
         int countOfChooses = listFilms.size();
@@ -268,18 +301,18 @@ public:
         } while (key != Enter);
         SetColor(White, Black);
         switch (number) {
-            case 0:
-                system("cls");
-                SetCursor(25, 8);
-                return 'R';
-            case 1:
-                system("cls");
-                SetCursor(25, 8);
-                return 'P';
-            default:
-                system("cls");
-                SetCursor(25, 8);
-                return 'B';
+        case 0:
+            system("cls");
+            SetCursor(25, 8);
+            return 'R';
+        case 1:
+            system("cls");
+            SetCursor(25, 8);
+            return 'P';
+        default:
+            system("cls");
+            SetCursor(25, 8);
+            return 'B';
         }
     }
     bool YesOrNo() {
@@ -360,7 +393,7 @@ public:
         SetColor(White, Black);
         return number + 1;
     }
-    void ChoosePlaceOnCinema(char** const hall, int const rows, int const columns, bool const reservation, int X=0, int Y=0) {
+    void ChoosePlaceOnCinema(char** const hall, int const rows, int const columns, bool const reservation, int X = 0, int Y = 0) {
         int numberX = X, numberY = Y, key;
         const int countOfChoosesX = rows;
         const int countOfChoosesY = columns;
@@ -395,7 +428,7 @@ public:
         if (numberX == rows) {
             system("cls");
             cout << "\n\t";
-            PrintCinemaFall(hall, rows, columns);
+            PrintCinemaHall(hall, rows, columns);
             cout << "\nВы уверены в выборе?";
             bool flag = YesOrNo();
             if (!flag) {
@@ -406,18 +439,96 @@ public:
         else if (hall[numberX][numberY] == '0' && reservation)
         {
             hall[numberX][numberY] = 'R';
+            ChoosePlaces[numberX][numberY] = 1;
             ChoosePlaceOnCinema(hall, rows, columns, reservation, numberX, numberY);
         }
         else if (hall[numberX][numberY] == '0' && !reservation) {
             hall[numberX][numberY] = '1';
+            ChoosePlaces[numberX][numberY] = 1;
             ChoosePlaceOnCinema(hall, rows, columns, reservation, numberX, numberY);
         }
         else {
             hall[numberX][numberY] = '0';
+            if (ChoosePlaces[numberX][numberY] != 0) {
+                ChoosePlaces[numberX][numberY] = 0;
+            }
             ChoosePlaceOnCinema(hall, rows, columns, reservation, numberX, numberY);
         }
         SetColor(White, Black);
         system("cls");
         //return false;
+    }
+    int Bills(int cost) {
+        int price = 0;
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns; j++)
+            {
+                if (ChoosePlaces[i][j] == 1) {
+                    price += cost;
+                }
+
+            }
+        }
+        return price;
+    }
+
+    int ChooseHall(const vector<Hall> &halls) {
+        int number = 0, key;
+        const int countOfChooses = halls.size();
+        do
+        {
+            ShowChooseHall(halls, number);
+            key = _getch();//получаем код нажатой клавиши
+            ShowChooseHall(halls, number);
+            switch (key)
+            {
+            case Up:
+                if (number == 0)number = countOfChooses - 1;
+                else number--;
+                break;
+            case Down:
+                if (number == countOfChooses - 1) number = 0;
+                else number++;
+                break;
+            case Enter:
+                break;
+            }
+        } while (key != Enter);
+        SetColor(White, Black);
+        return number + 1;
+    }
+
+    Menu() {
+        rows = 0;
+        columns = 0;
+        ChoosePlaces = new int* [rows];
+        for (int i = 0; i < rows; i++)
+        {
+            ChoosePlaces[i] = new int[columns];
+        }
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns; j++)
+            {
+                ChoosePlaces[i][j] = 0;
+            }
+        }
+    }
+    Menu(int const rows, int const columns) {
+        ChoosePlaces = new int* [rows];
+        this->rows = rows;
+        this->columns = columns;
+        for (int i = 0; i < this->rows; i++)
+        {
+            ChoosePlaces[i] = new int[this->columns];
+        }
+        for (int i = 0; i < this->rows; i++)
+        {
+            for (int j = 0; j < this->columns; j++)
+            {
+                ChoosePlaces[i][j] = 0;
+            }
+        }
     }
 };
