@@ -5,7 +5,7 @@
 #include <string>
 
 struct Hall {
-	int time; // придумайте что оно хранит
+	int time;
 	int rows;
 	int cols;
 	char** data;

@@ -30,7 +30,7 @@ class Menu {
                 SetColor(White, Black);
             }
             SetCursor(22, 7 + i + shift);
-            cout << i + 1 << ")" << listFall[i].time;
+            cout << i + 1 << ")" << listFall[i].time/60 << ":" << listFall[i].time % 60;
             for (int j = 0; j < listFall[i].rows; j++)
             {
                 for (int q = 0; q < listFall[i].cols; q++)
@@ -40,7 +40,7 @@ class Menu {
                 }
                 cout << "\n";
             }
-            shift += 3;
+            shift += 4;
         }
         SetColor(White, Black);
     }
@@ -124,6 +124,9 @@ class Menu {
             {
                 SetColor(Blue, Black);
             }
+            else if (poz == countOfChooses) {
+                SetColor(Green, Black);
+            }
             else
             {
                 SetColor(White, Black);
@@ -140,6 +143,9 @@ class Menu {
             SetCursor(25, 8 + i);
             if (poz == i)
             {
+                SetColor(LightGreen, Black);
+            }
+            else if (poz == productList.size()) {
                 SetColor(LightGreen, Black);
             }
             else
@@ -163,23 +169,27 @@ class Menu {
             SetCursor(21, 8 + i);
             cout << '|' << i + 1 << '|';
         }
-        for (size_t i = 0; i < rows; i++)
+        //--------------------------------
+        for (size_t i = 0; i <= rows+1; i++)
         {
             int shift = 0;
             for (size_t j = 0; j < columns; j++)
             {
                 SetCursor(25 + j + shift, 8 + i);
                 shift += 2;
-                if (i == pozX && j == pozY && hall[i][j] == 'R')
+                if (i < rows && i == pozX && j == pozY && hall[i][j] == 'R')
                 {
                     SetColor(Red, Black);
                 }
-                else if (i == pozX && j == pozY && hall[i][j] == '1') {
+                else if (i < rows && i == pozX && j == pozY && hall[i][j] == '1') {
                     SetColor(Blue, Black);
                 }
-
-                else if (pozX == rows) {
+                else if (i == rows && i == pozX) {
                     SetColor(Cyan, Black);
+                }
+                else if (i == rows + 1 && i == pozX)
+                {
+                    SetColor(Red, Black);
                 }
                 else if (i == pozX && j == pozY) {
                     SetColor(LightGreen, Black);
@@ -188,9 +198,18 @@ class Menu {
                 {
                     SetColor(White, Black);
                 }
-                cout << hall[i][j];
-                SetCursor(25, 8 + columns + 3);
-                cout << "Сохранить";
+                if (i < rows) {
+                    cout << hall[i][j];
+                }
+                else if (i == rows) {
+                    SetCursor(25, 8 + columns + 3);
+                    cout << "Сохранить";
+                }
+                else if (i == rows + 1) {
+                    SetCursor(25, 8 + columns + 4);
+                    cout << "Вернуться в самое начало";
+                }
+
             }
 
         }
@@ -251,6 +270,7 @@ public:
         COORD myCoords = { static_cast<SHORT>(x), static_cast<SHORT>(y) };
         SetConsoleCursorPosition(hStdOut, myCoords);
     }
+    //Выбор фильма
     int ChooseFilm(const vector<Film>& listFilms)
     {
         int number = 0, key;
@@ -279,7 +299,8 @@ public:
         system("cls");
         return number + 1;
     }
-    char ChooseTicket() {
+    //Выбор между бронированием и покупкой билета
+    int ChooseTicket() {
         int number = 0, key;
         const int countOfChooses = 3;
         do {
@@ -300,21 +321,11 @@ public:
             }
         } while (key != Enter);
         SetColor(White, Black);
-        switch (number) {
-        case 0:
-            system("cls");
-            SetCursor(25, 8);
-            return 'R';
-        case 1:
-            system("cls");
-            SetCursor(25, 8);
-            return 'P';
-        default:
-            system("cls");
-            SetCursor(25, 8);
-            return 'B';
-        }
+        system("cls");
+        SetCursor(25, 8);
+        return number + 1;
     }
+    //Выбор да или нет
     bool YesOrNo() {
         int number = 0, key;
         const int countOfChooses = 2;
@@ -343,6 +354,7 @@ public:
         SetColor(White, Black);
         return (number == 0);
     }
+    //Выбор размера еды
     int ChooseSize(int* cost, string* type) {
         int number = 0, key;
         const int countOfChooses = 3;
@@ -368,6 +380,7 @@ public:
         SetColor(White, Black);
         return number + 1;
     }
+    //Выбор чего-то из списка
     int ChooseProduct(const vector<string>& productList) {
         int number = 0, key;
         const int countOfChooses = productList.size();
@@ -393,7 +406,8 @@ public:
         SetColor(White, Black);
         return number + 1;
     }
-    void ChoosePlaceOnCinema(char** const hall, int const rows, int const columns, bool const reservation, int X = 0, int Y = 0) {
+    //Выбор места в зале
+    bool ChoosePlaceOnCinema(char** const hall, int const rows, int const columns, bool const reservation, int X = 0, int Y = 0, bool back = false) {
         int numberX = X, numberY = Y, key;
         const int countOfChoosesX = rows;
         const int countOfChoosesY = columns;
@@ -410,7 +424,7 @@ public:
                 else numberX--;
                 break;
             case Down:
-                if (numberX == countOfChoosesX) numberX = 0;
+                if (numberX == countOfChoosesX + 1) numberX = 0;
                 else numberX++;
                 break;
             case Left:
@@ -425,7 +439,7 @@ public:
                 break;
             }
         } while (key != Enter);
-        if (numberX == rows) {
+        if (numberX == countOfChoosesX) {
             system("cls");
             cout << "\n\t";
             PrintCinemaHall(hall, rows, columns);
@@ -433,31 +447,38 @@ public:
             bool flag = YesOrNo();
             if (!flag) {
                 //return true;
-                ChoosePlaceOnCinema(hall, rows, columns, reservation);
+                back = ChoosePlaceOnCinema(hall, rows, columns, reservation);
             }
         }
+        else if(numberX == countOfChoosesX + 1) {
+            system("cls");
+            back = true;
+
+        }
+        //Случай, если пользователь решил вернуться назад, и не внёс изменений
         else if (hall[numberX][numberY] == '0' && reservation)
         {
             hall[numberX][numberY] = 'R';
             ChoosePlaces[numberX][numberY] = 1;
-            ChoosePlaceOnCinema(hall, rows, columns, reservation, numberX, numberY);
+            back = ChoosePlaceOnCinema(hall, rows, columns, reservation, numberX, numberY, back);
         }
         else if (hall[numberX][numberY] == '0' && !reservation) {
             hall[numberX][numberY] = '1';
             ChoosePlaces[numberX][numberY] = 1;
-            ChoosePlaceOnCinema(hall, rows, columns, reservation, numberX, numberY);
+            back = ChoosePlaceOnCinema(hall, rows, columns, reservation, numberX, numberY, back);
         }
         else {
             hall[numberX][numberY] = '0';
             if (ChoosePlaces[numberX][numberY] != 0) {
                 ChoosePlaces[numberX][numberY] = 0;
             }
-            ChoosePlaceOnCinema(hall, rows, columns, reservation, numberX, numberY);
+            back = ChoosePlaceOnCinema(hall, rows, columns, reservation, numberX, numberY, back);
         }
         SetColor(White, Black);
         system("cls");
-        //return false;
+        return back;
     }
+    //Возвращает счёт за билеты
     int Bills(int cost) {
         int price = 0;
         for (int i = 0; i < rows; i++)
@@ -472,7 +493,7 @@ public:
         }
         return price;
     }
-
+    //Выбор зала
     int ChooseHall(const vector<Hall> &halls) {
         int number = 0, key;
         const int countOfChooses = halls.size();
